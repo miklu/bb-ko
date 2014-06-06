@@ -14,5 +14,9 @@
     "body-parser": "~1.0.0",
     "debug": "~0.7.4",
     "ejs": "~1.0.0"
+  },
+  "devDependencies": {
+    "supertest": "~0.13.0",
+    "should": "~4.0.1"
   }
 }

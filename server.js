@@ -24,3 +24,5 @@ app.use(methodOverride());
 app.use('/', routes);
 app.listen(app.get('port'));
 console.log('Kuunnellaan porttia ' + app.get('port'));
+
+module.exports = app;
