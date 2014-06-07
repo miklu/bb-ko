@@ -1,0 +1,43 @@
+db.vedot.insert({
+	pvm: new ISODate(),
+	pelimuoto: "Pitkäveto",
+	panos: 3.5,
+	kerroin: 10.7,
+	voitto: 0,
+	kohteet: [
+	{
+		ottelu: "Milan-Manu"
+	},
+	{
+		ottelu: "Jokerit-Kärpät"
+	}
+	]
+})
+
+
+
+db.vedot.insert({
+	pvm: new ISODate(),
+	pelimuoto: "Pitkäveto",
+	panos: 2,
+	kerroin: 8.64,
+	voitto: 0,
+	kohteet: [
+	{
+		ottelu: "Barca-Real"
+	}
+	]
+})
+
+db.vedot.insert({
+	pvm: new ISODate(),
+	pelimuoto: "Tulosveto",
+	panos: 4,
+	kerroin: 9.5,
+	voitto: 0,
+	kohteet: [
+	{
+		ottelu: "Saksa-Brasila"
+	}
+	]
+})

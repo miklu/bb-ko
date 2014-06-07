@@ -18,7 +18,9 @@ router.route('/vedot')
 	
 	// Kaikki vedot
 	.get(function(req, res, next) {
-		res.json({vedot: "Kaikki vedot"});
+		Veto.haeKaikki(function(err, docs) {
+			res.json(docs);
+		});
 	})
 	// Vedon tallennus
 	.post(function(req, res, next) {
@@ -43,10 +45,15 @@ router.route('/vedot')
 				console.log(doc);
 				res.json({vedot: doc});
 			}
-		})
+		});
 
 	});
 
+router.get('/tilastot', function(req, res, next) {
+	Veto.tilastot(function(err, docs) {
+			res.json(docs);
+	});
+});
 
 
 module.exports = router;
