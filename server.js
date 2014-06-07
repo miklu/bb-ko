@@ -2,6 +2,7 @@
 var express = require('express');
 var path = require('path');
 var routes = require('./routes');
+var mongoose = require('mongoose');
 var logger = require('morgan');
 var favicon = require('static-favicon');
 var bodyParser = require('body-parser');
@@ -19,6 +20,14 @@ app.use(express.static(__dirname + '/public'));
 app.use(logger('dev'));
 app.use(bodyParser());
 app.use(methodOverride());
+
+
+mongoose.connect('mongodb://localhost/dev');
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'Virhe yhdistäessä tietokantaan'));
+db.once('open', function() {
+	console.log('Yhdistetty tietokantaan');
+});
 
 
 app.use('/', routes);
