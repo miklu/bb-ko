@@ -49,6 +49,39 @@ router.route('/vedot')
 
 	});
 
+// Vedot id:n mukaan
+router.route('/vedot/:id')
+	.get(function(req, res, next) {
+		Veto.findById(req.params.id, function(err, result) {
+			res.json(result);
+		});
+	})
+	.put(function(req, res, next) {
+		Veto.findById(req.params.id, function(err, result) {
+			if(err) {
+				res.json({msg: 'Muokattavaa vetoa ei löydy'});
+			}
+			else {
+				result.pvm = req.body.pvm,
+				result.pelimuoto = req.body.pelimuoto,
+				result.panos = req.body.panos,
+				result.kerroin = req.body.kerroin,
+				result.voitto = req.body.voitto,
+				result.kohteet = req.body.kohteet,
+
+				result.save(function(err, saved) {
+					if(err) {
+						res.json({msg: 'Muokattavan vedon tallennus ei onnistunut'});
+					}
+					else {
+						res.json(saved);
+					}
+				});
+			}
+		});
+	});
+
+// Tilastot
 router.get('/tilastot', function(req, res, next) {
 	Veto.tilastot(function(err, docs) {
 			res.json(docs);

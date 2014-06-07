@@ -22,7 +22,22 @@ VetoSchema.statics.haePelimuoto = function(pelimuoto, cb) {
 };
 
 VetoSchema.statics.tilastot = function(cb) {
-	return this.aggregate({$match: {panos: {$gte: 3}}}).exec(cb);
+	return this.aggregate({
+		$group: {
+			_id: "overall",
+			kpl: {$sum: 1},
+			avgPanos: {$avg: '$panos'},
+			voitotYht: {$sum: '$voitto'},
+			voitotKpl: {$sum: {$cond:[{$gt:['$voitto', 0]}, 1, 0]}},
+		}},
+		{
+			$project: {
+				kpl: 1,
+				avgPanos: 1,
+				voitotYht: 1,
+				voitotKpl: 1
+		}
+	}).exec(cb);
 };
 
 var Veto = mongoose.model('Veto', VetoSchema);

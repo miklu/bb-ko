@@ -41,3 +41,16 @@ db.vedot.insert({
 	}
 	]
 })
+
+db.vedot.insert({
+	pvm: new ISODate(),
+	pelimuoto: "Pitkäveto",
+	panos: 4,
+	kerroin: 2.5,
+	voitto: 10,
+	kohteet: [
+	{
+		ottelu: "HIFK-Lukko"
+	}
+	]
+})
