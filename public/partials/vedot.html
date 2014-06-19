@@ -1,6 +1,10 @@
 Etsi: <input ng-model="query" />
 	<div ng-controller="VetoController">
 		<ul>
-			<li ng-repeat="veto in vedot | filter: query">{{veto.pelimuoto}}{{veto.panos}}, <a href="#/vedot/{{veto._id}}">ID</a></li>
+			<li ng-repeat="veto in vedot | filter: query">{{veto.pelimuoto}}{{veto.panos}}, <a href="#/vedot/{{veto._id}}">ID</a>
+			<button ng-click="poista(veto)">del</button>
+			<button ng-click="muokkaa(veto)">muokkaa</button>
+			</li>
 		</ul>
+		<button ng-click="tallenna()">Tallennus testi</button>
 	</div>

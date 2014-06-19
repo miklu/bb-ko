@@ -1,30 +1,31 @@
-var betBuddy = angular.module('betBuddy', ['ngRoute']);
-
-betBuddy.config(['$routeProvider', function($routeProvider) {
-	$routeProvider
-		.when('/vedot', {
-			templateUrl: 'partials/vedot.html',
-			controller: 'VetoController'
-		})
-		.when('/vedot/:vetoId', {
-			templateUrl: 'partials/kohteet.html',
-			controller: 'KohdeController'
-		})
-		.when('/tilastot', {
-			templateUrl: 'partials/tilastot.html',
-			controller: 'TilastoController'
-		})
-		.otherwise({
-			redirectTo: '/'
-		});
-}]);
-
 betBuddy.controller('VetoController', ['$scope', 'VetoFactory', function($scope, VetoFactory) {
+		
 		$scope.vedot = [];
+		
+		// Hakee kaikki vedot
 		VetoFactory.haeVedot()
 			.success(function(data) {
 				$scope.vedot = data;
 			});
+
+		// Vedon tallennus
+		$scope.tallenna = function() {
+			$scope.vedot.push({pelimuoto: 'Pitkäveto'});
+			console.log('Veto tallennettu!');
+		};
+
+		// Vedon poisto
+		$scope.poista = function(veto) {
+			$scope.vedot.splice($scope.vedot.indexOf(veto), 1);
+			console.log('Veto poistettu: ' + veto);
+		};
+
+		// Vedon muokkaus
+		$scope.muokkaa = function(veto) {
+			veto.pelimuoto = 'Muokattu pelimuoto';
+			console.log('Vetoa muokattu!');
+		};
+
  }]);
 
 betBuddy.controller('KohdeController', function($scope, $routeParams) {
