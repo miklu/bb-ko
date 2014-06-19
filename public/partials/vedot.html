@@ -1,0 +1,6 @@
+Etsi: <input ng-model="query" />
+	<div ng-controller="VetoController">
+		<ul>
+			<li ng-repeat="veto in vedot | filter: query">{{veto.pelimuoto}}{{veto.panos}}, <a href="#/vedot/{{veto._id}}">ID</a></li>
+		</ul>
+	</div>

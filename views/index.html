@@ -1,10 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="betBuddy">
 <head>
 	<meta charset="utf-8">
 	<title>BetBuddy</title>
 </head>
 <body>
 	<h1>Miikka</h1>
+	<p>1+2 = {{1+2}}</p>
+	<a href="/">Etusivu</a>
+	<a href="#/vedot">Vedot</a>
+	<a href="#/tilastot">Tilastot</a>
+	<div ng-view></div>
+	<script type="text/javascript" src="js/libs/angular.js"></script>
+	<script type="text/javascript" src="js/libs/angular-route.js"></script>
+	<script type="text/javascript" src="js/libs/angular-resource.js"></script>
+	<script type="text/javascript" src="js/services/services.js"></script>
+	<script type="text/javascript" src="js/controllers/controllers.js"></script>
 </body>
 </html>
