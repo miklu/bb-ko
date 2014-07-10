@@ -25,6 +25,7 @@ router.route('/vedot')
 	// Vedon tallennus
 	.post(function(req, res, next) {
 
+		// TODO, ainoastaan esimerkki
 		var tmp = new Veto({
 			pelimuoto: "Pitkäveto",
 			panos: 3.5,

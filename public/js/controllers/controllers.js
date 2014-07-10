@@ -1,3 +1,5 @@
+
+// VetoController
 betBuddy.controller('VetoController', ['$scope', 'VetoFactory', function($scope, VetoFactory) {
 		
 		$scope.vedot = [];
@@ -14,12 +16,6 @@ betBuddy.controller('VetoController', ['$scope', 'VetoFactory', function($scope,
 			console.log('Veto tallennettu!');
 		};
 
-		// Vedon poisto
-		$scope.poista = function(veto) {
-			$scope.vedot.splice($scope.vedot.indexOf(veto), 1);
-			console.log('Veto poistettu: ' + veto);
-		};
-
 		// Vedon muokkaus
 		$scope.muokkaa = function(veto) {
 			veto.pelimuoto = 'Muokattu pelimuoto';
@@ -28,14 +24,32 @@ betBuddy.controller('VetoController', ['$scope', 'VetoFactory', function($scope,
 
  }]);
 
-betBuddy.controller('KohdeController', function($scope, $routeParams) {
-	$scope.vetoId = $routeParams.vetoId;
-});
 
+// KohdeController
+betBuddy.controller('KohdeController', ['$scope', '$routeParams', 'VetoFactory', function($scope, $routeParams, VetoFactory) {
+	
+	$scope.veto = {};
+
+	VetoFactory.haeVeto($routeParams.vetoId)
+		.success(function(data) {
+			$scope.veto = data;
+		});
+}]);
+
+// TilastoController
 betBuddy.controller('TilastoController',['$scope', 'VetoFactory', function($scope, VetoFactory) {
 	$scope.tilastot = [];
 	VetoFactory.haeTilastot()
 			.success(function(data) {
 				$scope.tilastot = data;
 			});
+}]);
+
+// TallennaController
+betBuddy.controller('TallennaController', ['$scope', 'VetoFactory', function($scope, VetoFactory) {
+	$scope.tallennetteva = 'testi';
+
+	$scope.tallenna = function(veto) {
+		VetoFactory.tallenna(veto);
+	};
 }]);

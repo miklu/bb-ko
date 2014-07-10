@@ -14,6 +14,10 @@ betBuddy.config(['$routeProvider', function($routeProvider) {
 			templateUrl: 'partials/tilastot.html',
 			controller: 'TilastoController'
 		})
+		.when('/lisaa', {
+			templateUrl: 'partials/lisaa.html',
+			controller: 'TallennaController'
+		})
 		.otherwise({
 			redirectTo: '/'
 		});
