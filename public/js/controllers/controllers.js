@@ -17,8 +17,10 @@ betBuddy.controller('VetoController', ['$scope', '$location', 'VetoFactory', fun
 		$scope.tallenna = function(tallennettava) {
 			VetoFactory.tallenna({pelimuoto: tallennettava})
 				.success(function(data) {
-					console.log('Veto tallennettu: ' + data);
 					$location.path('/vedot');
+				})
+				.error(function(data, status) {
+					console.log(data);
 				});
 		};
 

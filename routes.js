@@ -28,18 +28,17 @@ router.route('/vedot')
 		// TODO, ainoastaan esimerkki
 		var tmp = new Veto({
 			pelimuoto: req.body.pelimuoto,
-			panos: 4,
+			// panos: 4,
 			voitto: 0
 		});
 
 		tmp.save(function(err, doc) {
 			if(err) {
 				console.log(err);
-				res.json({vedot: err});
+				res.send(400, err.name + ': ' + err.message);
 			}
 			else {
 				console.log(doc);
-				res.json({vedot: doc});
 			}
 		});
 
