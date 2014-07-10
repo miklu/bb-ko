@@ -27,14 +27,9 @@ router.route('/vedot')
 
 		// TODO, ainoastaan esimerkki
 		var tmp = new Veto({
-			pelimuoto: "Pitkäveto",
-			panos: 3.5,
-			kerroin: 10.87,
-			voitto: 0,
-			kohteet: [
-			{ottelu: "Milan-Manu"},
-			{ottelu: "Jokerit-Kärpät"}
-			]
+			pelimuoto: req.body.pelimuoto,
+			panos: 4,
+			voitto: 0
 		});
 
 		tmp.save(function(err, doc) {
