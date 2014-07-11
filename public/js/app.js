@@ -16,7 +16,7 @@ betBuddy.config(['$routeProvider', function($routeProvider) {
 		})
 		.when('/lisaa', {
 			templateUrl: 'partials/lisaa.html',
-			controller: 'VetoController'
+			controller: 'LomakeController'
 		})
 		.otherwise({
 			redirectTo: '/'

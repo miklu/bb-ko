@@ -19,17 +19,26 @@ router.route('/vedot')
 	// Kaikki vedot
 	.get(function(req, res, next) {
 		Veto.haeKaikki(function(err, docs) {
-			res.json(docs);
+			
+			if(err) {
+				console.log(err);
+				res.send(400, err.name + ': ' + err.message);
+			}
+			
+			else {
+				res.json(docs);
+			}
 		});
 	})
 	// Vedon tallennus
 	.post(function(req, res, next) {
 
-		// TODO, ainoastaan esimerkki
 		var tmp = new Veto({
 			pelimuoto: req.body.pelimuoto,
-			// panos: 4,
-			voitto: 0
+			panos: req.body.panos,
+			voitto: req.body.voitto,
+			kerroin: req.body.kerroin,
+			kohteet: req.body.kohteet
 		});
 
 		tmp.save(function(err, doc) {
@@ -39,6 +48,7 @@ router.route('/vedot')
 			}
 			else {
 				console.log(doc);
+				res.json(doc);
 			}
 		});
 
@@ -48,13 +58,25 @@ router.route('/vedot')
 router.route('/vedot/:id')
 	.get(function(req, res, next) {
 		Veto.findById(req.params.id, function(err, result) {
-			res.json(result);
+
+			if(err) {
+				res.send(400, err.name + ': ' + err.message);
+			}
+
+			else {
+				res.json(result);
+			}
+		});
+	})
+	.delete(function(req, res, next) {
+		Veto.findByIdAndRemove(req.params.id, function(err, removed) {
+			console.log(removed);
 		});
 	})
 	.put(function(req, res, next) {
 		Veto.findById(req.params.id, function(err, result) {
 			if(err) {
-				res.json({msg: 'Muokattavaa vetoa ei löydy'});
+				res.send(400, err.name + ': ' + err.message);
 			}
 			else {
 				result.pvm = req.body.pvm,
@@ -65,9 +87,11 @@ router.route('/vedot/:id')
 				result.kohteet = req.body.kohteet,
 
 				result.save(function(err, saved) {
+
 					if(err) {
-						res.json({msg: 'Muokattavan vedon tallennus ei onnistunut'});
+						res.send(400, err.name + ': ' + err.message);
 					}
+
 					else {
 						res.json(saved);
 					}
@@ -79,7 +103,14 @@ router.route('/vedot/:id')
 // Tilastot
 router.get('/tilastot', function(req, res, next) {
 	Veto.tilastot(function(err, docs) {
+		
+		if(err) {
+			res.send(400, err.name + ': ' + err.message);
+		}
+		else {
 			res.json(docs);
+		}
+
 	});
 });
 

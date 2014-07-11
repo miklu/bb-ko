@@ -4,33 +4,34 @@ betBuddy.controller('VetoController', ['$scope', '$location', 'VetoFactory', fun
 		
 		$scope.vedot = [];
 
-		$scope.muokattava = '';
-		$scope.tallennettava = '';
-		
 		// Hakee kaikki vedot
 		VetoFactory.haeVedot()
 			.success(function(data) {
 				$scope.vedot = data;
 			});
 
-		// Vedon tallennus
-		$scope.tallenna = function(tallennettava) {
-			VetoFactory.tallenna({pelimuoto: tallennettava})
+		$scope.poista = function(id) {
+			VetoFactory.poista(id)
 				.success(function(data) {
-					$location.path('/vedot');
-				})
-				.error(function(data, status) {
 					console.log(data);
 				});
 		};
 
-		// Vedon muokkaus
-		$scope.muokkaa = function(veto) {
-			veto.pelimuoto = 'Muokattu pelimuoto';
-			console.log('Vetoa muokattu!');
-		};
-
  }]);
+
+betBuddy.controller('LomakeController', ['$scope', '$location', 'VetoFactory', function($scope, $location, VetoFactory) {
+	
+	$scope.tallenna = function(tallennettava) {
+		VetoFactory.tallenna(JSON.stringify(tallennettava))
+		.success(function(data) {
+			$location.path('/vedot');
+		})
+		.error(function(data, status) {
+			console.log(data);
+		});
+	};
+
+}]);
 
 
 // KohdeController

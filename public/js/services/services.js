@@ -18,6 +18,10 @@ betBuddy.factory('VetoFactory', ['$http', function($http) {
 		return $http.post('http://localhost:3000/vedot', veto);
 	};
 
+	factory.poista = function(id) {
+		return $http.delete('http://localhost:3000/vedot/' + id);
+	}
+
 	return factory;
 
 }]);
