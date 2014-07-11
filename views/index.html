@@ -10,19 +10,17 @@
 	
 	<!-- YLÄPALKKI -->
 	<div id="topbar">
-		<h1><span>Bet</span>Buddy - <span data-bind="text: nimi"></span></h1>
+		<h1><span>Bet</span>Buddy</h1>
 	</div>
 
 	<div id="wrapper">
 
 		<!-- SIDEBAR -->
 		<div id="sidebar-wrapper">
-			<ul class="sidebar-nav">
-				<li class="selected">
-				<a href="#">Kaikki</a></li>
-				<li><a href="#">Pitkävedot</a></li>
-				<li><a href="#">Tulosvedot</a></li>
-				<li><a href="#">Monivedot</a></li>
+			<ul class="sidebar-nav" data-bind="foreach: kategoriat">
+				<li><a href="#" data-bind="text: $data,
+						css: { selected: $data == $root.valittuKategoria() },
+						click: $root.siirry"></a></li>
 			</ul>
 		</div>
 		
@@ -33,6 +31,37 @@
 			<div id="tilastobar">
 				<h2>Tilastot tänne</h2>
 			</div>
+			
+			<div id="vedot">
+				<h2 data-bind="text: valittuKategoria"></h2>
+				<table data-bind="visible: kategorianVedot">
+					<thead>
+						<tr>
+							<th>Pelimuoto</th>
+							<th>Panos</th>
+							<th>Kerroin</th>
+							<th>Voitto</th>
+						</tr>
+					</thead>
+					<tbody data-bind="foreach: kategorianVedot">
+						<tr data-bind="click: $root.naytaTiedot">
+							<td data-bind="text: pelimuoto"></td>
+							<td data-bind="text: panos"></td>
+							<td data-bind="text: kerroin"></td>
+							<td data-bind="text: voitto"></td>
+						</tr>
+					</tbody>
+				</table>
+				
+				<div id="vedonTiedot" data-bind="with: vedonTiedot">
+					<p data-bind="text: _id"></p>
+					<p data-bind="text: pvm"></p>
+					<p data-bind="text: pelimuoto"></p>
+					<p data-bind="text: kerroin"></p>
+				</div>
+
+
+			</div>
 
 		</div>
 
@@ -40,6 +69,7 @@
 	</div>
 
 	<script src="js/knockout-3.1.0.js"></script>
+	<script src="js/jquery-2.1.1.min.js"></script>
 	<script src="js/main.js"></script>
 </body>
 </html>

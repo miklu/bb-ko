@@ -54,6 +54,28 @@ router.route('/vedot')
 
 	});
 
+// Vedot pelimuodon mukaan
+router.route('/pelimuoto/:pelimuoto')
+	.get(function(req, res, next) {
+		if(req.params.pelimuoto.toLowerCase() === 'kaikki') {
+			Veto.haeKaikki(function(err, docs) {
+			
+			if(err) {
+				console.log(err);
+				res.send(400, err.name + ': ' + err.message);
+			}
+			
+			else {
+				res.json(docs);
+			}
+		});
+		}
+		Veto.find({pelimuoto: new RegExp('^'+req.params.pelimuoto+'$', "i")}, function(err, results) {
+			res.json(results);
+		});
+	});
+
+
 // Vedot id:n mukaan
 router.route('/vedot/:id')
 	.get(function(req, res, next) {
