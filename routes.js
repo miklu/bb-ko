@@ -57,21 +57,16 @@ router.route('/vedot')
 // Vedot pelimuodon mukaan
 router.route('/pelimuoto/:pelimuoto')
 	.get(function(req, res, next) {
-		if(req.params.pelimuoto.toLowerCase() === 'kaikki') {
-			Veto.haeKaikki(function(err, docs) {
+		
+		Veto.find({pelimuoto: new RegExp('^'+req.params.pelimuoto+'$', "i")}, function(err, results) {
 			
 			if(err) {
-				console.log(err);
 				res.send(400, err.name + ': ' + err.message);
 			}
-			
 			else {
-				res.json(docs);
+				res.json(results);
 			}
-		});
-		}
-		Veto.find({pelimuoto: new RegExp('^'+req.params.pelimuoto+'$', "i")}, function(err, results) {
-			res.json(results);
+			
 		});
 	});
 
