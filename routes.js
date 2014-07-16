@@ -33,7 +33,7 @@ router.route('/vedot')
 	// Vedon tallennus
 	.post(function(req, res, next) {
 
-		var tmp = new Veto({
+		var veto = new Veto({
 			pelimuoto: req.body.pelimuoto,
 			panos: req.body.panos,
 			voitto: req.body.voitto,
@@ -41,7 +41,7 @@ router.route('/vedot')
 			kohteet: req.body.kohteet
 		});
 
-		tmp.save(function(err, doc) {
+		veto.save(function(err, doc) {
 			if(err) {
 				console.log(err);
 				res.send(400, err.name + ': ' + err.message);
@@ -88,11 +88,7 @@ router.route('/vedot/:id')
 	.delete(function(req, res, next) {
 		Veto.findByIdAndRemove(req.params.id, function(err, removed) {
 			console.log(removed);
-		});
-		Veto.tilastot(function(err, docs) {
-			if(!err) {
-				res.json(docs);
-			}
+			res.json(removed);
 		});
 	})
 	.put(function(req, res, next) {

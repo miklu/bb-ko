@@ -23,17 +23,10 @@
 		{nimi: 'Tulosvedot', url: self.baseUrl + 'pelimuoto/tulosveto'},
 		{nimi: 'Monivedot', url: self.baseUrl + 'pelimuoto/moniveto'}];
 
-		// Vedot
-		self.vedot = ko.observableArray();
-
-		// Tilastot
-		self.tilastot = ko.observableArray();
-
-		// Pitää kirjaa valitusta kategoriasta
-		self.valittuKategoria = ko.observable();
-
-		// Valittu veto
-		self.valittuVeto = ko.observable();
+		self.vedot = ko.observableArray();				// Vedot
+		self.tilastot = ko.observableArray();			// Tilastot
+		self.valittuKategoria = ko.observable();	// Pitää kirjaa valitusta kategoriasta
+		self.valittuVeto = ko.observable(); 			// Klikattu/valittu veto
 
 		// Tallennuslomake
 		self.tallennusLomake = {pelimuoto: ko.observable(), panos: ko.observable(), voitto: ko.observable(), kerroin: ko.observable(), kohteet: ko.observableArray()};
@@ -41,11 +34,10 @@
 		self.tallennusLomake.kohteet.push({ottelu: 'eka ottelu'});
 
 		// Navigoi/Valitsee kategorian
-		self.valitseKategoria = function(category, event) {
+		self.valitseKategoria = function(category) {
 			self.valittuKategoria(category.nimi);
 			self.valittuVeto(null);
 			$.getJSON(category.url, self.vedot);
-			console.log(category.nimi + ', ' + category.url);
 		};
 
 		// Näytä vedon tiedot
@@ -57,8 +49,10 @@
 		self.tallennaVeto = function() {
 			$.post(self.baseUrl + 'vedot', new Veto(self.tallennusLomake.pelimuoto(), self.tallennusLomake.panos(), self.tallennusLomake.kerroin(), self.tallennusLomake.voitto(), self.tallennusLomake.kohteet()))
 				.done(function(data) {
-					// Lisätään palvelimen palauttama data, jotta saadaan myös _id
+
+					// Lisätään palvelimen palauttama veto, jotta saadaan myös _id yms.
 					self.vedot.push(data);
+					
 					// Tyhjennetään lomake
 					self.haeTilastot();
 					self.tallennusLomake.pelimuoto('');
@@ -67,17 +61,18 @@
 				});
 		};
 
+		// Lisää uuden kohteen lomakkeeseen
 		self.lisaaKohde = function() {
 			self.tallennusLomake.kohteet.push({ottelu: 'uusi kohde'});
 		};
 
-		// Poisto
+		// Poistaminen
 		self.poistaVeto = function(veto) {
 			$.ajax({
 				type: 'DELETE',
 				url: self.baseUrl + 'vedot/' + veto._id,
 				success: function(data) {
-					self.tilastot(data);
+					self.haeTilastot();
 				}
 			});
 			self.vedot.remove(veto);
@@ -89,10 +84,8 @@
 			$.getJSON(self.baseUrl + 'tilastot', self.tilastot);
 		};
 
-		// Oletuksena näytetään kaikki vedot
-		self.valitseKategoria(self.kategoriat[0]);
-		// Haetaan tilastot
-		self.haeTilastot();
+		self.valitseKategoria(self.kategoriat[0]);	// Oletuksena näytetään kaikki vedot
+		self.haeTilastot();													// Haetaan tilastot
 
 	}; // End of ViewModel
 
