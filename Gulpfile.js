@@ -3,6 +3,8 @@ var gulp = require('gulp'),
 		autoprefixer = require('gulp-autoprefixer'),
 		minifycss = require('gulp-minify-css'),
 		rename = require('gulp-rename'),
+		uglify = require('gulp-uglify'),
+		concat = require('gulp-concat'),
 		livereload = require('gulp-livereload'),
 		path = require('path');
 
@@ -16,6 +18,15 @@ gulp.task('styles', function() {
 		.pipe(rename({suffix: '.min'}))
 		.pipe(minifycss())
 		.pipe(gulp.dest('./public/css'));
+});
+
+gulp.task('scripts', function() {
+	gulp.src('./public/js/jquery-2.1.1.min.js', './public/js/knockout-3.1.0.js', './public/js/main.js')
+		.pipe(concat('all.js'))
+		.pipe(gulp.dest('./public/js'))
+		.pipe(rename({suffix: '.min'}))
+		.pipe(uglify())
+		.pipe(gulp.dest('./public/js'));
 });
 
 gulp.task('watch', function() {

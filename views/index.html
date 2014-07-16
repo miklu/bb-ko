@@ -59,16 +59,20 @@
 					</tbody>
 				</table>
 				
-				<input type="text" data-bind="value: tallennusLomake.pelimuoto" placeholder="pelimuoto">
-				<input type="text" data-bind="value: tallennusLomake.panos" placeholder="panos">
-				<input type="text" data-bind="value: tallennusLomake.kerroin" placeholder="kerroin">
-				<input type="text" data-bind="value: tallennusLomake.voitto" placeholder="voitto">
-				<div id="kohdeLomakkeet" data-bind="foreach: tallennusLomake.kohteet">
-					<input type="text" data-bind="value: ottelu">
+				<button type="button" class="btn btn-primary" data-bind="click: aloitaTallennus">Lisää veto</button>
+
+				<div id="vetoLomake" data-bind="visible: tallennusLomake.isVisible">
+					<input type="text" data-bind="value: tallennusLomake.pelimuoto" placeholder="pelimuoto">
+					<input type="text" data-bind="value: tallennusLomake.panos" placeholder="panos">
+					<input type="text" data-bind="value: tallennusLomake.kerroin" placeholder="kerroin">
+					<input type="text" data-bind="value: tallennusLomake.voitto" placeholder="voitto">
+					<div data-bind="foreach: tallennusLomake.kohteet">
+						<input type="text" data-bind="value: ottelu">
+					</div>
+					<button type="button" class="btn btn-primary" data-bind="click: lisaaKohde">Lisää kohde</button>
+					<button type="button" class="btn btn-primary" data-bind="click: tallennaVeto">Tallenna veto</button>
 				</div>
 
-				<button type="button" class="btn btn-primary" data-bind="click: lisaaKohde">Lisää kohde</button>
-				<button type="button" class="btn btn-primary" data-bind="click: tallennaVeto">Tallenna veto</button>
 
 				
 				<div id="vedonTiedot" data-bind="with: valittuVeto">

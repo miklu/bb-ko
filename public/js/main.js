@@ -30,6 +30,8 @@
 
 		// Tallennuslomake
 		self.tallennusLomake = {pelimuoto: ko.observable(), panos: ko.observable(), voitto: ko.observable(), kerroin: ko.observable(), kohteet: ko.observableArray()};
+		self.tallennusLomake.isVisible = ko.observable(false);
+
 		// Oletuksena lomakkeessa yksi kohde
 		self.tallennusLomake.kohteet.push({ottelu: 'eka ottelu'});
 
@@ -45,6 +47,11 @@
 			self.valittuVeto(veto);
 		};
 
+		// Tuo vetolomakkeen näkyville
+		self.aloitaTallennus = function() {
+			self.tallennusLomake.isVisible(true);
+		};
+
 		// Tallennus
 		self.tallennaVeto = function() {
 			$.post(self.baseUrl + 'vedot', new Veto(self.tallennusLomake.pelimuoto(), self.tallennusLomake.panos(), self.tallennusLomake.kerroin(), self.tallennusLomake.voitto(), self.tallennusLomake.kohteet()))
@@ -53,8 +60,9 @@
 					// Lisätään palvelimen palauttama veto, jotta saadaan myös _id yms.
 					self.vedot.push(data);
 					
-					// Tyhjennetään lomake
 					self.haeTilastot();
+					// Tyhjennetään lomake
+					self.tallennusLomake.isVisible(false);
 					self.tallennusLomake.pelimuoto('');
 					self.tallennusLomake.kohteet('');
 					self.tallennusLomake.kohteet({ottelu: 'ekakohde'});
