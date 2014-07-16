@@ -28,8 +28,11 @@
 		<div id="page-content-wrapper">
 
 			<!-- TILASTOT -->
-			<div id="tilastobar">
+			<div id="tilastobar" data-bind="foreach: tilastot">
 				<h2>Tilastot tänne</h2>
+				<p data-bind="text: kpl"></p>
+				<p data-bind="text: voitotYht"></p>
+				<p data-bind="text: voitotKpl"></p>
 			</div>
 			
 			<div id="vedot">

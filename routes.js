@@ -89,6 +89,11 @@ router.route('/vedot/:id')
 		Veto.findByIdAndRemove(req.params.id, function(err, removed) {
 			console.log(removed);
 		});
+		Veto.tilastot(function(err, docs) {
+			if(!err) {
+				res.json(docs);
+			}
+		});
 	})
 	.put(function(req, res, next) {
 		Veto.findById(req.params.id, function(err, result) {

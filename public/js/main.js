@@ -26,6 +26,9 @@
 		// Vedot
 		self.vedot = ko.observableArray();
 
+		// Tilastot
+		self.tilastot = ko.observableArray();
+
 		// Pitää kirjaa valitusta kategoriasta
 		self.valittuKategoria = ko.observable();
 
@@ -33,9 +36,9 @@
 		self.valittuVeto = ko.observable();
 
 		// Tallennuslomake
-		self.tallennusLomake = {pelimuoto: '', panos: '', voitto: '', kerroin: '', kohteet: ko.observableArray()};
+		self.tallennusLomake = {pelimuoto: ko.observable(), panos: ko.observable(), voitto: ko.observable(), kerroin: ko.observable(), kohteet: ko.observableArray()};
 		// Oletuksena lomakkeessa yksi kohde
-		self.tallennusLomake.kohteet.push({ottelu: 'ottelusi'});
+		self.tallennusLomake.kohteet.push({ottelu: 'eka ottelu'});
 
 		// Navigoi/Valitsee kategorian
 		self.valitseKategoria = function(category, event) {
@@ -52,12 +55,15 @@
 
 		// Tallennus
 		self.tallennaVeto = function() {
-			$.post(self.baseUrl + 'vedot', new Veto(self.tallennusLomake.pelimuoto, self.tallennusLomake.panos, self.tallennusLomake.kerroin, self.tallennusLomake.voitto, self.tallennusLomake.kohteet()))
+			$.post(self.baseUrl + 'vedot', new Veto(self.tallennusLomake.pelimuoto(), self.tallennusLomake.panos(), self.tallennusLomake.kerroin(), self.tallennusLomake.voitto(), self.tallennusLomake.kohteet()))
 				.done(function(data) {
 					// Lisätään palvelimen palauttama data, jotta saadaan myös _id
 					self.vedot.push(data);
 					// Tyhjennetään lomake
-					self.tallennusLomake = {pelimuoto: '', panos: '', voitto: '', kerroin: '', kohteet: []};
+					self.haeTilastot();
+					self.tallennusLomake.pelimuoto('');
+					self.tallennusLomake.kohteet('');
+					self.tallennusLomake.kohteet({ottelu: 'ekakohde'});
 				});
 		};
 
@@ -71,15 +77,22 @@
 				type: 'DELETE',
 				url: self.baseUrl + 'vedot/' + veto._id,
 				success: function(data) {
-					console.log(data);
+					self.tilastot(data);
 				}
 			});
 			self.vedot.remove(veto);
 			self.valittuVeto(null);
 		};
 
+		// Tilastojen haku
+		self.haeTilastot = function() {
+			$.getJSON(self.baseUrl + 'tilastot', self.tilastot);
+		};
+
 		// Oletuksena näytetään kaikki vedot
 		self.valitseKategoria(self.kategoriat[0]);
+		// Haetaan tilastot
+		self.haeTilastot();
 
 	}; // End of ViewModel
 
