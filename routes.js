@@ -18,8 +18,7 @@ router.route('/vedot')
 	
 	// Kaikki vedot
 	.get(function(req, res, next) {
-		Veto.haeKaikki(function(err, docs) {
-			
+		Veto.find({}).limit(50).sort({'pvm': 'descending'}).exec(function (err, docs) {			
 			if(err) {
 				console.log(err);
 				res.send(400, err.name + ': ' + err.message);

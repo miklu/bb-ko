@@ -39,6 +39,7 @@
 		self.valitseKategoria = function(category) {
 			self.valittuKategoria(category.nimi);
 			self.valittuVeto(null);
+			self.tallennusLomake.isVisible(false);
 			$.getJSON(category.url, self.vedot);
 		};
 
@@ -61,9 +62,13 @@
 					self.vedot.push(data);
 					
 					self.haeTilastot();
+					self.valitseKategoria(self.kategoriat[0]);
 					// Tyhjennetään lomake
 					self.tallennusLomake.isVisible(false);
 					self.tallennusLomake.pelimuoto('');
+					self.tallennusLomake.panos('');
+					self.tallennusLomake.kerroin('');
+					self.tallennusLomake.voitto('');
 					self.tallennusLomake.kohteet('');
 					self.tallennusLomake.kohteet({ottelu: 'ekakohde'});
 				});
