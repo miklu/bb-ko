@@ -96,7 +96,6 @@ router.route('/vedot/:id')
 				res.send(400, err.name + ': ' + err.message);
 			}
 			else {
-				result.pvm = req.body.pvm,
 				result.pelimuoto = req.body.pelimuoto,
 				result.panos = req.body.panos,
 				result.kerroin = req.body.kerroin,

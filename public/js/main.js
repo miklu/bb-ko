@@ -38,14 +38,17 @@
 		{nimi: 'Tulosvedot', url: self.baseUrl + 'pelimuoto/tulosveto'},
 		{nimi: 'Monivedot', url: self.baseUrl + 'pelimuoto/moniveto'}];
 
+		// Data
 		self.vedot = ko.observableArray();				// Vedot
 		self.tilastot = ko.observableArray();			// Tilastot
 		self.valittuKategoria = ko.observable();	// Pitää kirjaa valitusta kategoriasta
 		self.valittuVeto = ko.observable(); 			// Klikattu/valittu veto
+		self.muokattavaVeto = ko.observable();
 
 		// Tallennuslomake
 		self.tallennusLomake = {pelimuoto: ko.observable(), panos: ko.observable(), voitto: ko.observable(), kerroin: ko.observable(), kohteet: ko.observableArray()};
-		self.tallennusLomake.isVisible = ko.observable(false);
+		self.tallennusLomake.isVisible = ko.observable(false);	// Onko näkyvä
+		self.tallennusLomake.isNew = ko.observable(false);			// Luodaanko uusi veto vai muokataanko
 
 		// Oletuksena lomakkeessa yksi kohde
 		self.tallennusLomake.kohteet.push({ottelu: 'eka ottelu'});
@@ -66,29 +69,45 @@
 		// Tuo vetolomakkeen näkyville
 		self.aloitaTallennus = function() {
 			self.tallennusLomake.isVisible(true);
+			self.tallennusLomake.isNew(true);
 		};
 
 		// Tallennus
 		self.tallennaVeto = function() {
-			$.post(self.baseUrl + 'vedot', new Veto(self.tallennusLomake.pelimuoto(), self.tallennusLomake.panos(), self.tallennusLomake.kerroin(), self.tallennusLomake.voitto(), self.tallennusLomake.kohteet()))
-				.done(function(data) {
 
-					// Lisätään palvelimen palauttama veto, jotta saadaan myös _id yms.
-					self.vedot.push(data);
-					
-					self.haeTilastot();
-					self.valitseKategoria(self.kategoriat[0]);
-					toastr.success('Veto tallennettu');
+			// Uusi veto
+			if(self.tallennusLomake.isNew()) {
+				$.post(self.baseUrl + 'vedot', new Veto(self.tallennusLomake.pelimuoto(), self.tallennusLomake.panos(), self.tallennusLomake.kerroin(), self.tallennusLomake.voitto(), self.tallennusLomake.kohteet()))
+					.done(function(data) {
 
-					// Tyhjennetään lomake
-					self.tallennusLomake.isVisible(false);
-					self.tallennusLomake.pelimuoto('');
-					self.tallennusLomake.panos('');
-					self.tallennusLomake.kerroin('');
-					self.tallennusLomake.voitto('');
-					self.tallennusLomake.kohteet('');
-					self.tallennusLomake.kohteet({ottelu: 'ekakohde'});
+						// Lisätään palvelimen palauttama veto, jotta saadaan myös _id yms.
+						self.vedot.push(data);
+						
+						self.haeTilastot();
+						self.valitseKategoria(self.kategoriat[0]);
+						toastr.success('Veto tallennettu');
+
+						// Tyhjennetään lomake
+						self.tyhjennaLomake();
+					});
+			}
+
+			// Vedon muokkaus
+			else {
+				console.log('Ei ole uusi veto' + self.muokattavaVeto()._id);
+				var veto = new Veto(self.tallennusLomake.pelimuoto(), self.tallennusLomake.panos(), self.tallennusLomake.kerroin(), self.tallennusLomake.voitto(), self.tallennusLomake.kohteet());
+				$.ajax({
+					type: 'PUT',
+					url: self.baseUrl + 'vedot/' + self.muokattavaVeto()._id,
+					data: veto,
+					success: function(data) {
+						self.haeTilastot();
+						self.valitseKategoria(self.kategoriat[0]);
+						self.tyhjennaLomake();
+						toastr.success('Vetoa muokattu!');
+					}
 				});
+			}
 		};
 
 		// Lisää uuden kohteen lomakkeeseen
@@ -98,7 +117,8 @@
 
 		// Muokkaus
 		self.muokkaa = function(veto) {
-			console.log(veto);
+			self.tallennusLomake.isNew(false);
+			self.muokattavaVeto(veto);
 			self.tallennusLomake.pelimuoto(veto.pelimuoto);
 			self.tallennusLomake.panos(veto.panos);
 			self.tallennusLomake.kerroin(veto.kerroin);
@@ -124,6 +144,17 @@
 		// Tilastojen haku
 		self.haeTilastot = function() {
 			$.getJSON(self.baseUrl + 'tilastot', self.tilastot);
+		};
+
+		// Tallennuslomakkeen tyhjennys
+		self.tyhjennaLomake = function() {
+			self.tallennusLomake.isVisible(false);
+			self.tallennusLomake.pelimuoto('');
+			self.tallennusLomake.panos('');
+			self.tallennusLomake.kerroin('');
+			self.tallennusLomake.voitto('');
+			self.tallennusLomake.kohteet('');
+			self.tallennusLomake.kohteet({ottelu: 'ekakohde'});
 		};
 
 		self.valitseKategoria(self.kategoriat[0]);	// Oletuksena näytetään kaikki vedot
