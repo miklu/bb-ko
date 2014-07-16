@@ -3,11 +3,13 @@
 
 	// Yksittäinen veto
 	var Veto = function(pelimuoto, panos, kerroin, voitto, kohteet) {
-		this.pelimuoto = pelimuoto;
-		this.panos = panos;
-		this.kerroin = kerroin;
-		this.voitto = voitto;
-		this.kohteet = kohteet;
+
+		var self = this;
+		self.pelimuoto = pelimuoto;
+		self.panos = panos;
+		self.kerroin = kerroin;
+		self.voitto = voitto;
+		self.kohteet = kohteet;
 	};
 
 	// ViewModel
@@ -24,26 +26,52 @@
 		{nimi: 'Monivedot', url: self.baseUrl + 'pelimuoto/moniveto'}];
 
 		// Vedot
-		self.vedot = ko.observable();
+		self.vedot = ko.observableArray();
 
 		// Pitää kirjaa valitusta kategoriasta
 		self.valittuKategoria = ko.observable();
+
 		// Valittu veto
 		self.valittuVeto = ko.observable();
+
+		// Tallennettava veto, lomakkeen kentät
+		self.tallennettava = ko.observable({pelimuoto: '', panos: '', voitto: '', kerroin: '', kohteet: []});
 
 		// Navigoi/Valitsee kategorian
 		self.valitseKategoria = function(category, event) {
 			self.valittuKategoria(category.nimi);
 			self.valittuVeto(null);
-			$.getJSON(category.url, function(data) {
-				self.vedot(data);
-			});
+			$.getJSON(category.url, self.vedot);
 			console.log(category.nimi + ', ' + category.url);
 		};
 
 		// Näytä vedon tiedot
 		self.valitseVeto = function(veto) {
 			self.valittuVeto(veto);
+		};
+
+		// Tallennus
+		self.tallennaVeto = function() {
+			$.post(self.baseUrl + 'vedot', self.tallennettava())
+				.done(function(data) {
+					// Lisätään palvelimen palauttama data, jotta saadaan myös _id
+					self.vedot.push(data);
+					// Tyhjennetään lomake
+					self.tallennettava({pelimuoto: '', panos: '', voitto: '', kerroin: '', kohteet: []});
+				});
+		};
+
+		// Poisto
+		self.poistaVeto = function(veto) {
+			$.ajax({
+				type: 'DELETE',
+				url: self.baseUrl + 'vedot/' + veto._id,
+				success: function(data) {
+					console.log(data);
+				}
+			});
+			self.vedot.remove(veto);
+			self.valittuVeto(null);
 		};
 
 		// Oletuksena näytetään kaikki vedot

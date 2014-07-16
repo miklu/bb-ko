@@ -42,6 +42,7 @@
 							<th>Panos</th>
 							<th>Kerroin</th>
 							<th>Voitto</th>
+							<th>Toiminnot</th>
 						</tr>
 					</thead>
 					<tbody data-bind="foreach: vedot">
@@ -50,9 +51,18 @@
 							<td data-bind="text: panos"></td>
 							<td data-bind="text: kerroin"></td>
 							<td data-bind="text: voitto"></td>
+							<td><a href="#" data-bind="click: $root.poistaVeto">Poista</a></td>
 						</tr>
 					</tbody>
 				</table>
+				
+				<input type="text" data-bind="value: tallennettava().pelimuoto" placeholder="pelimuoto">
+				<input type="text" data-bind="value: tallennettava().panos" placeholder="panos">
+				<input type="text" data-bind="value: tallennettava().kerroin" placeholder="kerroin">
+				<input type="text" data-bind="value: tallennettava().voitto" placeholder="voitto">
+
+				<button type="button" class="btn btn-primary" data-bind="click: tallennaVeto">Lisää veto</button>
+
 				
 				<div id="vedonTiedot" data-bind="with: valittuVeto">
 					<p data-bind="text: _id"></p>
