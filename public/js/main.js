@@ -10,6 +10,21 @@
 		self.kohteet = kohteet;
 	};
 
+	toastr.options = {
+  "closeButton": false,
+  "debug": false,
+  "positionClass": "toast-top-right",
+  "onclick": null,
+  "showDuration": "300",
+  "hideDuration": "300",
+  "timeOut": "2000",
+  "extendedTimeOut": "1000",
+  "showEasing": "swing",
+  "hideEasing": "linear",
+  "showMethod": "fadeIn",
+  "hideMethod": "fadeOut"
+};
+
 	// ViewModel
 	var ViewModel = function() {
 		var self = this;
@@ -63,6 +78,8 @@
 					
 					self.haeTilastot();
 					self.valitseKategoria(self.kategoriat[0]);
+					toastr.success('Veto tallennettu');
+
 					// Tyhjennetään lomake
 					self.tallennusLomake.isVisible(false);
 					self.tallennusLomake.pelimuoto('');
@@ -79,6 +96,17 @@
 			self.tallennusLomake.kohteet.push({ottelu: 'uusi kohde'});
 		};
 
+		// Muokkaus
+		self.muokkaa = function(veto) {
+			console.log(veto);
+			self.tallennusLomake.pelimuoto(veto.pelimuoto);
+			self.tallennusLomake.panos(veto.panos);
+			self.tallennusLomake.kerroin(veto.kerroin);
+			self.tallennusLomake.voitto(veto.voitto);
+			self.tallennusLomake.kohteet(veto.kohteet);
+			self.tallennusLomake.isVisible(true);
+		};
+
 		// Poistaminen
 		self.poistaVeto = function(veto) {
 			$.ajax({
@@ -86,6 +114,7 @@
 				url: self.baseUrl + 'vedot/' + veto._id,
 				success: function(data) {
 					self.haeTilastot();
+					toastr.success('Veto poistettu');
 				}
 			});
 			self.vedot.remove(veto);
@@ -103,5 +132,6 @@
 	}; // End of ViewModel
 
 	ko.applyBindings(new ViewModel());
+
 	
 })();

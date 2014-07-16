@@ -4,6 +4,7 @@
 	<meta charset="utf-8">
 	<title>BetBuddy</title>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/toastr.min.css">
 	<link rel="stylesheet" href="css/styles.min.css">
 </head>
 <body>
@@ -55,6 +56,7 @@
 							<td data-bind="text: kerroin"></td>
 							<td data-bind="text: voitto"></td>
 							<td><a href="#" data-bind="click: $root.poistaVeto">Poista</a></td>
+							<td><a href="#" data-bind="click: $root.muokkaa">Muokkaa</a></td>
 						</tr>
 					</tbody>
 				</table>
@@ -95,6 +97,7 @@
 
 	<script src="js/knockout-3.1.0.js"></script>
 	<script src="js/jquery-2.1.1.min.js"></script>
+	<script src="js/toastr.min.js"></script>
 	<script src="js/main.js"></script>
 </body>
 </html>
