@@ -56,12 +56,16 @@
 					</tbody>
 				</table>
 				
-				<input type="text" data-bind="value: tallennettava().pelimuoto" placeholder="pelimuoto">
-				<input type="text" data-bind="value: tallennettava().panos" placeholder="panos">
-				<input type="text" data-bind="value: tallennettava().kerroin" placeholder="kerroin">
-				<input type="text" data-bind="value: tallennettava().voitto" placeholder="voitto">
+				<input type="text" data-bind="value: tallennusLomake.pelimuoto" placeholder="pelimuoto">
+				<input type="text" data-bind="value: tallennusLomake.panos" placeholder="panos">
+				<input type="text" data-bind="value: tallennusLomake.kerroin" placeholder="kerroin">
+				<input type="text" data-bind="value: tallennusLomake.voitto" placeholder="voitto">
+				<div id="kohdeLomakkeet" data-bind="foreach: tallennusLomake.kohteet">
+					<input type="text" data-bind="value: ottelu">
+				</div>
 
-				<button type="button" class="btn btn-primary" data-bind="click: tallennaVeto">Lisää veto</button>
+				<button type="button" class="btn btn-primary" data-bind="click: lisaaKohde">Lisää kohde</button>
+				<button type="button" class="btn btn-primary" data-bind="click: tallennaVeto">Tallenna veto</button>
 
 				
 				<div id="vedonTiedot" data-bind="with: valittuVeto">
@@ -69,6 +73,9 @@
 					<p data-bind="text: pvm"></p>
 					<p data-bind="text: pelimuoto"></p>
 					<p data-bind="text: kerroin"></p>
+					<div data-bind="foreach: kohteet">
+						<p data-bind="text: ottelu"></p>
+					</div>
 				</div>
 
 

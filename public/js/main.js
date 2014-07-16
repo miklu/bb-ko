@@ -1,9 +1,7 @@
 (function() {
 	'use strict';
 
-	// Yksittäinen veto
 	var Veto = function(pelimuoto, panos, kerroin, voitto, kohteet) {
-
 		var self = this;
 		self.pelimuoto = pelimuoto;
 		self.panos = panos;
@@ -34,8 +32,10 @@
 		// Valittu veto
 		self.valittuVeto = ko.observable();
 
-		// Tallennettava veto, lomakkeen kentät
-		self.tallennettava = ko.observable({pelimuoto: '', panos: '', voitto: '', kerroin: '', kohteet: []});
+		// Tallennuslomake
+		self.tallennusLomake = {pelimuoto: '', panos: '', voitto: '', kerroin: '', kohteet: ko.observableArray()};
+		// Oletuksena lomakkeessa yksi kohde
+		self.tallennusLomake.kohteet.push({ottelu: 'ottelusi'});
 
 		// Navigoi/Valitsee kategorian
 		self.valitseKategoria = function(category, event) {
@@ -52,13 +52,17 @@
 
 		// Tallennus
 		self.tallennaVeto = function() {
-			$.post(self.baseUrl + 'vedot', self.tallennettava())
+			$.post(self.baseUrl + 'vedot', new Veto(self.tallennusLomake.pelimuoto, self.tallennusLomake.panos, self.tallennusLomake.kerroin, self.tallennusLomake.voitto, self.tallennusLomake.kohteet()))
 				.done(function(data) {
 					// Lisätään palvelimen palauttama data, jotta saadaan myös _id
 					self.vedot.push(data);
 					// Tyhjennetään lomake
-					self.tallennettava({pelimuoto: '', panos: '', voitto: '', kerroin: '', kohteet: []});
+					self.tallennusLomake = {pelimuoto: '', panos: '', voitto: '', kerroin: '', kohteet: []};
 				});
+		};
+
+		self.lisaaKohde = function() {
+			self.tallennusLomake.kohteet.push({ottelu: 'uusi kohde'});
 		};
 
 		// Poisto
