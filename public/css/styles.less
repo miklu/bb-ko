@@ -1,18 +1,35 @@
+@bg-color: #ddd;
+@sidebar-bg-color: #1f212f;
+@sidebar-width: 180px;
+@tilastot-bg-color: #fff;
+
 body {
-	background: #ddd;
+	background: @bg-color;
+}
+
+#topbar {
+	background-image: linear-gradient(#0cf 0, #0af 100%);
+	width: 100%;
+	height: 36px;
+	text-align: center;
+	font-weight: bolder;
+	font-size: 16pt;
+	position: fixed;
+	z-index: 10001;
+	top: 0;
 }
 
 #wrapper {
-	padding-left: 250px;
+	padding-left: @sidebar-width;
 	transition: all 0.4s ease;
 }
 
 #sidebar-wrapper {
-	margin-left: -250px;
-	left: 250px;
+	margin-left: -@sidebar-width;
+	left: @sidebar-width;
 	top: 36px;
-	width: 250px;
-	background: #1f212f;
+	width: @sidebar-width;
+	background: @sidebar-bg-color;
 	position: fixed;
 	height: 100%;
 	z-index: 10;
@@ -24,7 +41,7 @@ body {
 
 #tilastobar {
 	width: 100%;
-	background: #fff;
+	background: @tilastot-bg-color;
 	height: 80px;
 	border-bottom: 1px #d5d5d5 solid;
 }
@@ -46,30 +63,17 @@ h1 span {
 	list-style: none;
 	padding: 0;
 	margin: 0;
+	li {
+			border-bottom: 1px solid #282a3a;
+			a {
+				padding: 13px 0 13px 20px;
+				display: block;
+				color: #fff;
+				font-size: 12px;
+			}
+	}
 }
 
-.sidebar-nav li {
-	border-bottom: 1px solid #282a3a;
-}
-
-.sidebar-nav li a {
-	padding: 20px 0;
-	display: block;
-	color: #fff;
-	font-size: 12px;
-}
-
-#topbar {
-	background-image: linear-gradient(#0cf 0, #0af 100%);
-width: 100%;
-height: 36px;
-text-align: center;
-font-weight: bolder;
-font-size: 16pt;
-position: fixed;
-z-index: 10001;
-top: 0;
-}
 
 .selected {
 	width: 100%;

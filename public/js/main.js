@@ -62,8 +62,12 @@
 		};
 
 		// Näytä vedon tiedot
-		self.valitseVeto = function(veto) {
-			self.valittuVeto(veto);
+		self.valitseVeto = function(veto, event) {
+			console.log(event.target.tagName);
+			if(event.target.tagName == 'TD') {
+				self.valittuVeto(veto);
+				self.tallennusLomake.isVisible(false);
+			}
 		};
 
 		// Tuo vetolomakkeen näkyville
@@ -118,6 +122,7 @@
 		// Muokkaus
 		self.muokkaa = function(veto) {
 			self.tallennusLomake.isNew(false);
+			self.valittuVeto(null);
 			self.muokattavaVeto(veto);
 			self.tallennusLomake.pelimuoto(veto.pelimuoto);
 			self.tallennusLomake.panos(veto.panos);

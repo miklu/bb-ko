@@ -30,11 +30,13 @@ gulp.task('scripts', function() {
 });
 
 gulp.task('watch', function() {
-	gulp.watch('./public/css/*.less', ['styles']);
-	var server = livereload();
-	gulp.watch(['./public/**', './views/*.html']).on('change', function(file) {
-		server.changed(file.path);
-	});
+	// gulp.watch('./public/css/*.less', ['styles']);
+	// var server = livereload();
+	// gulp.watch(['./public/**', './views/*.html']).on('change', function(file) {
+	// 	server.changed(file.path);
+	// });
+	livereload.listen();
+	gulp.watch('public/css/**', ['styles']).on('change', livereload.changed);
 });
 
 gulp.task('default', ['styles']);
