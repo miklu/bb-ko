@@ -46,13 +46,13 @@
           <tbody>
             <tr data-bind="foreach: tilastot">
               <td data-bind="text: kpl"></td>
-              <td data-bind="text: avgPanos"></td>
-              <td data-bind="text: panoksetYht"></td>
-              <td data-bind="text: voitotYht"></td>
+              <td data-bind="valuutta: avgPanos"></td>
+              <td data-bind="valuutta: panoksetYht"></td>
+              <td data-bind="valuutta: voitotYht"></td>
               <td data-bind="text: voitotKpl"></td>
-              <td data-bind="text: osumisprosentti"></td>
-              <td data-bind="text: palautusprosentti"></td>
-              <td data-bind="text: saldo"></td>
+              <td data-bind="prosentti: osumisprosentti"></td>
+              <td data-bind="prosentti: palautusprosentti"></td>
+              <td data-bind="valuutta: saldo"></td>
             </tr>
           </tbody>
         </table>
