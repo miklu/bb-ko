@@ -115,6 +115,11 @@
       // Vedon muokkaus
       else {
         console.log('Ei ole uusi veto' + self.muokattavaVeto()._id);
+        self.tallennusLomake.kohteet().forEach(function(elem) {
+          if(elem.ottelu === "") {
+            self.tallennusLomake.kohteet.remove(elem);
+          }
+        });
         var veto = new Veto(self.tallennusLomake.pelimuoto(), self.tallennusLomake.panos(), self.tallennusLomake.kerroin(), self.tallennusLomake.voitto(), self.tallennusLomake.kohteet());
         $.ajax({
           type: 'PUT',

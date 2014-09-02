@@ -68,6 +68,7 @@
               <th>Pelimuoto</th>
               <th>Panos</th>
               <th>Kerroin</th>
+              <th>Kohteita</th>
               <th>Voitto</th>
               <th>Toiminnot</th>
             </tr>
@@ -77,6 +78,7 @@
               <td data-bind="text: pelimuoto"></td>
               <td data-bind="text: panos"></td>
               <td data-bind="text: kerroin"></td>
+              <td data-bind="text: kohteet.length"></td>
               <td data-bind="text: voitto"></td>
               <td><a href="#" data-bind="click: $root.poistaVeto">Poista</a></td>
               <td><a href="#" data-bind="click: $root.muokkaa">Muokkaa</a></td>
