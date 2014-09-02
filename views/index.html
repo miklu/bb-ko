@@ -34,15 +34,25 @@
           <thead>
             <tr>
               <th>Kappaletta</th>
+              <th>Keskim. panos</th>
+              <th>Panokset yht.</th>
               <th>Voitot kpl</th>
               <th>Voitot yht.</th>
+              <th>Osumisprosentti</th>
+              <th>Palautusprosentti</th>
+              <th>Saldo</th>
             </tr>
           </thead>
           <tbody>
             <tr data-bind="foreach: tilastot">
               <td data-bind="text: kpl"></td>
+              <td data-bind="text: avgPanos"></td>
+              <td data-bind="text: panoksetYht"></td>
               <td data-bind="text: voitotYht"></td>
               <td data-bind="text: voitotKpl"></td>
+              <td data-bind="text: osumisprosentti"></td>
+              <td data-bind="text: palautusprosentti"></td>
+              <td data-bind="text: saldo"></td>
             </tr>
           </tbody>
         </table>

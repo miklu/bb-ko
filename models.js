@@ -27,6 +27,7 @@ VetoSchema.statics.tilastot = function(cb) {
 			_id: "overall",
 			kpl: {$sum: 1},
 			avgPanos: {$avg: '$panos'},
+			panoksetYht: {$sum: '$panos'},
 			voitotYht: {$sum: '$voitto'},
 			voitotKpl: {$sum: {$cond:[{$gt:['$voitto', 0]}, 1, 0]}},
 		}},
@@ -34,8 +35,12 @@ VetoSchema.statics.tilastot = function(cb) {
 			$project: {
 				kpl: 1,
 				avgPanos: 1,
+				panoksetYht: 1,
 				voitotYht: 1,
-				voitotKpl: 1
+				voitotKpl: 1,
+				osumisprosentti: {$divide: ['$voitotKpl', '$kpl']},
+				palautusprosentti: {$divide: ['$voitotYht', '$panoksetYht']},
+				saldo: {$subtract: ['$voitotYht', '$panoksetYht']}
 		}
 	}).exec(cb);
 };
