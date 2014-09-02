@@ -29,18 +29,30 @@
     <div id="page-content-wrapper">
 
       <!-- TILASTOT -->
-      <div id="tilastobar" data-bind="foreach: tilastot">
-        <h2>Tilastot tänne</h2>
-        <p data-bind="text: kpl"></p>
-        <p data-bind="text: voitotYht"></p>
-        <p data-bind="text: voitotKpl"></p>
+      <div id="tilastobar">
+        <table>
+          <thead>
+            <tr>
+              <th>Kappaletta</th>
+              <th>Voitot kpl</th>
+              <th>Voitot yht.</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-bind="foreach: tilastot">
+              <td data-bind="text: kpl"></td>
+              <td data-bind="text: voitotYht"></td>
+              <td data-bind="text: voitotKpl"></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       
       <!-- VEDOT -->
       <div id="vedot">
         <h2 data-bind="text: valittuKategoria"></h2>
 
-        <table class="table table-striped" data-bind="visible: vedot">
+        <table class="table table-striped" data-bind="visible: vedot().length > 0">
           <thead>
             <tr>
               <th>Pelimuoto</th>
