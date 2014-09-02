@@ -29,7 +29,7 @@ VetoSchema.statics.tilastot = function(cb) {
 			avgPanos: {$avg: '$panos'},
 			panoksetYht: {$sum: '$panos'},
 			voitotYht: {$sum: '$voitto'},
-			voitotKpl: {$sum: {$cond:[{$gt:['$voitto', 0]}, 1, 0]}},
+			voitotKpl: {$sum: {$cond:[{$gt:['$voitto', 0]}, 1, 0]}}
 		}},
 		{
 			$project: {
@@ -43,6 +43,33 @@ VetoSchema.statics.tilastot = function(cb) {
 				saldo: {$subtract: ['$voitotYht', '$panoksetYht']}
 		}
 	}).exec(cb);
+};
+
+VetoSchema.statics.tilastotPelimuodoittain = function(pelimuoto, cb) {
+	return this.aggregate({
+		$match: {pelimuoto: pelimuoto}
+	},
+	{
+		$group: {
+			_id: 'pelimuodon_mukaan',
+			kpl: {$sum: 1},
+			avgPanos: {$avg: '$panos'},
+			panoksetYht: {$sum: '$panos'},
+			voitotYht: {$sum: '$voitto'},
+			voitotKpl: {$sum: {$cond:[{$gt:['$voitto', 0]}, 1, 0]}}
+		}},
+		{
+			$project: {
+				kpl: 1,
+				avgPanos: 1,
+				panoksetYht: 1,
+				voitotYht: 1,
+				voitotKpl: 1,
+				osumisprosentti: {$divide: ['$voitotKpl', '$kpl']},
+				palautusprosentti: {$divide: ['$voitotYht', '$panoksetYht']},
+				saldo: {$subtract: ['$voitotYht', '$panoksetYht']}
+			}
+		}).exec(cb);
 };
 
 var Veto = mongoose.model('Veto', VetoSchema);

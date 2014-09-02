@@ -49,10 +49,10 @@
 
     // Navigaatio
     self.kategoriat = [
-      {nimi: 'Kaikki', url: self.baseUrl + 'vedot'},
-      {nimi: 'Pitkävedot', url: self.baseUrl + 'pelimuoto/pitkäveto'},
-      {nimi: 'Tulosvedot', url: self.baseUrl + 'pelimuoto/tulosveto'},
-      {nimi: 'Monivedot', url: self.baseUrl + 'pelimuoto/moniveto'}];
+      {nimi: 'Kaikki', url: self.baseUrl + 'vedot', tilasto: '/tilastot'},
+      {nimi: 'Pitkävedot', url: self.baseUrl + 'pelimuoto/pitkäveto', tilasto: '/tilastot/Pitkäveto'},
+      {nimi: 'Tulosvedot', url: self.baseUrl + 'pelimuoto/tulosveto', tilasto: '/tilastot/Tulosveto'},
+      {nimi: 'Monivedot', url: self.baseUrl + 'pelimuoto/moniveto', tilasto: '/tilastot/Moniveto'}];
 
     // Data
     self.vedot = ko.observableArray();        // Vedot
@@ -75,6 +75,7 @@
       self.valittuVeto(null);
       self.tallennusLomake.isVisible(false);
       $.getJSON(category.url, self.vedot);
+      $.getJSON(category.tilasto, self.tilastot);
     };
 
     // Näytä vedon tiedot
