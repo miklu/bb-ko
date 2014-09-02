@@ -1,103 +1,104 @@
 <!DOCTYPE html>
-<html ng-app="betBuddy">
+<html>
 <head>
-	<meta charset="utf-8">
-	<title>BetBuddy</title>
-	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/toastr.min.css">
-	<link rel="stylesheet" href="css/styles.min.css">
+  <meta charset="utf-8">
+  <title>BetBuddy</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/toastr.min.css">
+  <link rel="stylesheet" href="css/styles.min.css">
 </head>
 <body>
-	
-	<!-- YLÄPALKKI -->
-	<div id="topbar">
-		<h1><span>Bet</span>Buddy</h1>
-	</div>
+  
+  <!-- YLÄPALKKI -->
+  <div id="topbar">
+    <h1><span>Bet</span>Buddy</h1>
+  </div>
 
-	<div id="wrapper">
+  <div id="wrapper">
 
-		<!-- SIDEBAR -->
-		<div id="sidebar-wrapper">
-			<ul class="sidebar-nav" data-bind="foreach: kategoriat">
-				<li><a href="#" data-bind="text: nimi,
-						css: { selected: nimi == $root.valittuKategoria() },
-						click: $root.valitseKategoria"></a></li>
-			</ul>
-		</div>
-		
-		<!-- MAIN CONTENT -->
-		<div id="page-content-wrapper">
+    <!-- SIDEBAR -->
+    <div id="sidebar-wrapper">
+      <ul class="sidebar-nav" data-bind="foreach: kategoriat">
+        <li><a href="#" data-bind="text: nimi,
+            css: { selected: nimi == $root.valittuKategoria() },
+            click: $root.valitseKategoria"></a></li>
+      </ul>
+    </div>
+    
+    <!-- MAIN CONTENT -->
+    <div id="page-content-wrapper">
 
-			<!-- TILASTOT -->
-			<div id="tilastobar" data-bind="foreach: tilastot">
-				<h2>Tilastot tänne</h2>
-				<p data-bind="text: kpl"></p>
-				<p data-bind="text: voitotYht"></p>
-				<p data-bind="text: voitotKpl"></p>
-			</div>
-			
-			<div id="vedot">
-				<h2 data-bind="text: valittuKategoria"></h2>
+      <!-- TILASTOT -->
+      <div id="tilastobar" data-bind="foreach: tilastot">
+        <h2>Tilastot tänne</h2>
+        <p data-bind="text: kpl"></p>
+        <p data-bind="text: voitotYht"></p>
+        <p data-bind="text: voitotKpl"></p>
+      </div>
+      
+      <!-- VEDOT -->
+      <div id="vedot">
+        <h2 data-bind="text: valittuKategoria"></h2>
 
-				<table class="table table-striped" data-bind="visible: vedot">
-					<thead>
-						<tr>
-							<th>Pelimuoto</th>
-							<th>Panos</th>
-							<th>Kerroin</th>
-							<th>Voitto</th>
-							<th>Toiminnot</th>
-						</tr>
-					</thead>
-					<tbody data-bind="foreach: vedot">
-						<tr data-bind="click: $root.valitseVeto">
-							<td data-bind="text: pelimuoto"></td>
-							<td data-bind="text: panos"></td>
-							<td data-bind="text: kerroin"></td>
-							<td data-bind="text: voitto"></td>
-							<td><a href="#" data-bind="click: $root.poistaVeto">Poista</a></td>
-							<td><a href="#" data-bind="click: $root.muokkaa">Muokkaa</a></td>
-						</tr>
-					</tbody>
-				</table>
-				
-				<button type="button" class="btn btn-primary" data-bind="click: aloitaTallennus">Lisää veto</button>
+        <table class="table table-striped" data-bind="visible: vedot">
+          <thead>
+            <tr>
+              <th>Pelimuoto</th>
+              <th>Panos</th>
+              <th>Kerroin</th>
+              <th>Voitto</th>
+              <th>Toiminnot</th>
+            </tr>
+          </thead>
+          <tbody data-bind="foreach: vedot">
+            <tr data-bind="click: $root.valitseVeto">
+              <td data-bind="text: pelimuoto"></td>
+              <td data-bind="text: panos"></td>
+              <td data-bind="text: kerroin"></td>
+              <td data-bind="text: voitto"></td>
+              <td><a href="#" data-bind="click: $root.poistaVeto">Poista</a></td>
+              <td><a href="#" data-bind="click: $root.muokkaa">Muokkaa</a></td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <button type="button" class="btn btn-primary" data-bind="click: aloitaTallennus">Lisää veto</button>
 
-				<div id="vetoLomake" data-bind="visible: tallennusLomake.isVisible">
-					<input type="text" data-bind="value: tallennusLomake.pelimuoto" placeholder="pelimuoto">
-					<input type="text" data-bind="value: tallennusLomake.panos" placeholder="panos">
-					<input type="text" data-bind="value: tallennusLomake.kerroin" placeholder="kerroin">
-					<input type="text" data-bind="value: tallennusLomake.voitto" placeholder="voitto">
-					<div data-bind="foreach: tallennusLomake.kohteet">
-						<input type="text" data-bind="value: ottelu">
-					</div>
-					<button type="button" class="btn btn-primary" data-bind="click: lisaaKohde">Lisää kohde</button>
-					<button type="button" class="btn btn-primary" data-bind="click: tallennaVeto">Tallenna veto</button>
-				</div>
-
-
-				
-				<div id="vedonTiedot" data-bind="with: valittuVeto">
-					<p data-bind="text: _id"></p>
-					<p data-bind="text: pvm"></p>
-					<p data-bind="text: pelimuoto"></p>
-					<p data-bind="text: kerroin"></p>
-					<div data-bind="foreach: kohteet">
-						<p data-bind="text: ottelu"></p>
-					</div>
-				</div>
+        <div id="vetoLomake" data-bind="visible: tallennusLomake.isVisible">
+          <input type="text" data-bind="value: tallennusLomake.pelimuoto" placeholder="pelimuoto">
+          <input type="text" data-bind="value: tallennusLomake.panos" placeholder="panos">
+          <input type="text" data-bind="value: tallennusLomake.kerroin" placeholder="kerroin">
+          <input type="text" data-bind="value: tallennusLomake.voitto" placeholder="voitto">
+          <div data-bind="foreach: tallennusLomake.kohteet">
+            <input type="text" data-bind="value: ottelu">
+          </div>
+          <button type="button" class="btn btn-primary" data-bind="click: lisaaKohde">Lisää kohde</button>
+          <button type="button" class="btn btn-primary" data-bind="click: tallennaVeto">Tallenna veto</button>
+        </div>
 
 
-			</div>
+        
+        <div id="vedonTiedot" data-bind="with: valittuVeto">
+          <p data-bind="text: _id"></p>
+          <p data-bind="text: pvm"></p>
+          <p data-bind="text: pelimuoto"></p>
+          <p data-bind="text: kerroin"></p>
+          <div data-bind="foreach: kohteet">
+            <p data-bind="text: ottelu"></p>
+          </div>
+        </div>
 
-		</div>
 
-	<!-- END OF WRAPPER -->
-	</div>
+      </div>
 
-	<script src="js/knockout-3.1.0.js"></script>
-	<script src="js/jquery-2.1.1.min.js"></script>
-	<script src="js/toastr.min.js"></script>
-	<script src="js/main.js"></script>
+    </div>
+
+  <!-- END OF WRAPPER -->
+  </div>
+
+  <script src="js/knockout-3.1.0.js"></script>
+  <script src="js/jquery-2.1.1.min.js"></script>
+  <script src="js/toastr.min.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>
