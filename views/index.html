@@ -5,121 +5,32 @@
   <title>BetBuddy</title>
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/toastr.min.css">
-  <link rel="stylesheet" href="css/styles.min.css">
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
   
-  <!-- YLÄPALKKI -->
-  <div id="topbar">
-    <h1><span>Bet</span>Buddy</h1>
-  </div>
-
-  <div id="wrapper">
-
-    <!-- SIDEBAR -->
+  <div id="page-wrapper">
     <div id="sidebar-wrapper">
-      <ul class="sidebar-nav" data-bind="foreach: kategoriat">
-        <li><a href="#" data-bind="text: nimi,
-            css: { selected: nimi == $root.valittuKategoria() },
-            click: $root.valitseKategoria"></a></li>
+      <ul class="sidebar">
+        <li class="sidebar-main">
+          <a href="#"><strong>Bet</strong>Buddy
+          <span class="menu-icon"><strong>1X2</strong></span>
+          </a>
+        </li>
+        <li class="sidebar-title"><span>Pelimuodottain</span></li>
+        <li class="sidebar-list"><a href="#">Kaikki</a></li>
+        <li class="sidebar-list"><a href="#">Pitkävedot</a></li>
+        <li class="sidebar-list"><a href="#">Tulosvedot</a></li>
+        <li class="sidebar-title"><span>Kohteittain</span></li>
+        <li class="sidebar-list"><a href="#">Singlet</a></li>
+        <li class="sidebar-list"><a href="#">Tuplat</a></li>
+        <li class="sidebar-list"><a href="#">Triot</a></li>
+        <li class="sidebar-list"><a href="#">Muut</a></li>
       </ul>
     </div>
-    
-    <!-- MAIN CONTENT -->
-    <div id="page-content-wrapper">
-
-      <!-- TILASTOT -->
-      <div id="tilastobar">
-        <table>
-          <thead>
-            <tr>
-              <th>Kappaletta</th>
-              <th>Keskim. panos</th>
-              <th>Panokset yht.</th>
-              <th>Voitot kpl</th>
-              <th>Voitot yht.</th>
-              <th>Osumisprosentti</th>
-              <th>Palautusprosentti</th>
-              <th>Saldo</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr data-bind="foreach: tilastot">
-              <td data-bind="text: kpl"></td>
-              <td data-bind="valuutta: avgPanos"></td>
-              <td data-bind="valuutta: panoksetYht"></td>
-              <td data-bind="valuutta: voitotYht"></td>
-              <td data-bind="text: voitotKpl"></td>
-              <td data-bind="prosentti: osumisprosentti"></td>
-              <td data-bind="prosentti: palautusprosentti"></td>
-              <td data-bind="valuutta: saldo"></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      
-      <!-- VEDOT -->
-      <div id="vedot">
-        <h2 data-bind="text: valittuKategoria"></h2>
-
-        <table class="table table-striped" data-bind="visible: vedot().length > 0">
-          <thead>
-            <tr>
-              <th>Pelimuoto</th>
-              <th>Panos</th>
-              <th>Kerroin</th>
-              <th>Kohteita</th>
-              <th>Voitto</th>
-              <th>Toiminnot</th>
-            </tr>
-          </thead>
-          <tbody data-bind="foreach: vedot">
-            <tr data-bind="click: $root.valitseVeto">
-              <td data-bind="text: pelimuoto"></td>
-              <td data-bind="text: panos"></td>
-              <td data-bind="text: kerroin"></td>
-              <td data-bind="text: kohteet.length"></td>
-              <td data-bind="text: voitto"></td>
-              <td><a href="#" data-bind="click: $root.poistaVeto">Poista</a></td>
-              <td><a href="#" data-bind="click: $root.muokkaa">Muokkaa</a></td>
-            </tr>
-          </tbody>
-        </table>
-        
-        <button type="button" class="btn btn-primary" data-bind="click: aloitaTallennus">Lisää veto</button>
-
-        <div id="vetoLomake" data-bind="visible: tallennusLomake.isVisible">
-          <input type="text" data-bind="value: tallennusLomake.pelimuoto" placeholder="pelimuoto">
-          <input type="text" data-bind="value: tallennusLomake.panos" placeholder="panos">
-          <input type="text" data-bind="value: tallennusLomake.kerroin" placeholder="kerroin">
-          <input type="text" data-bind="value: tallennusLomake.voitto" placeholder="voitto">
-          <div data-bind="foreach: tallennusLomake.kohteet">
-            <input type="text" data-bind="value: ottelu">
-          </div>
-          <button type="button" class="btn btn-primary" data-bind="click: lisaaKohde">Lisää kohde</button>
-          <button type="button" class="btn btn-primary" data-bind="click: tallennaVeto">Tallenna veto</button>
-        </div>
-
-
-        
-        <div id="vedonTiedot" data-bind="with: valittuVeto">
-          <p data-bind="text: _id"></p>
-          <p data-bind="text: pvm"></p>
-          <p data-bind="text: pelimuoto"></p>
-          <p data-bind="text: kerroin"></p>
-          <div data-bind="foreach: kohteet">
-            <p data-bind="text: ottelu"></p>
-          </div>
-        </div>
-
-
-      </div>
-
-    </div>
-
-  <!-- END OF WRAPPER -->
   </div>
 
+  <!-- JAVASCRIPT -->
   <script src="js/all.js"></script>
 </body>
 </html>

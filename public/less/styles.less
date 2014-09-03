@@ -1,81 +1,77 @@
-@bg-color: #ddd;
-@sidebar-bg-color: #1f212f;
-@sidebar-width: 180px;
-@tilastot-bg-color: #fff;
+@blue: #30426a;
+
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
 
 body {
-	background: @bg-color;
+  margin: 0;
+  padding: 0;
+  line-height: 1.43;
+  background: #f3f3f3;
+  color: #333;
+  font-family: Lato, 'Open Sans';
 }
 
-#topbar {
-	background-image: linear-gradient(#0cf 0, #0af 100%);
-	width: 100%;
-	height: 36px;
-	text-align: center;
-	font-weight: bolder;
-	font-size: 16pt;
-	position: fixed;
-	z-index: 10001;
-	top: 0;
+#page-wrapper {
+  padding-left: 250px;
+  height: 100%;
 }
-
-#wrapper {
-	padding-left: @sidebar-width;
-	transition: all 0.4s ease;
+#page-wrapper #sidebar-wrapper {
+  left: 150px;
 }
 
 #sidebar-wrapper {
-	margin-left: -@sidebar-width;
-	left: @sidebar-width;
-	top: 36px;
-	width: @sidebar-width;
-	background: @sidebar-bg-color;
-	position: fixed;
-	height: 100%;
-	z-index: 10;
-}
-
-#page-content-wrapper {
-	margin-top: 36px;
-}
-
-#tilastobar {
-	width: 100%;
-	background: @tilastot-bg-color;
-	height: 80px;
-	border-bottom: 1px #d5d5d5 solid;
-}
-
-h1 {
-	padding: 0;
-	margin: 3px;
-	font-size: 24px;
-	font-family: 'Lato';
-	font-weight: 900;
-	color: #fff;
-}
-
-h1 span {
-	font-weight: normal;
-}
-
-.sidebar-nav {
-	list-style: none;
-	padding: 0;
-	margin: 0;
-	li {
-			border-bottom: 1px solid #282a3a;
-			a {
-				padding: 13px 0 13px 20px;
-				display: block;
-				color: #fff;
-				font-size: 12px;
-			}
-	}
+  margin-left: -150px;
+  width: 250px;
+  position: fixed;
+  height: 100%;
+  background: #30426a;
+  z-index: 999;
 }
 
 
-.selected {
-	width: 100%;
-	background: #303140;
+
+ul.sidebar {
+  position: absolute;
+  top: 0; bottom: 45px; 
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-indent: 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  li {
+    line-height: 40px;
+    a {
+      font-size: 16px;
+      color: #b2bfdc;
+      text-indent: 25px;
+      display: block;
+      width: 250px;
+    }
+  }
+}
+
+ul.sidebar .sidebar-main {
+  height: 65px;
+  a {
+    font-size: 20px;
+    line-height: 60px;
+    color: #fff;
+    background: darken(@blue, 5%);
+    span {
+      float: right;
+      padding-right: 20px;
+    }
+  }
+}
+
+.sidebar-title {
+  color: #627cb7;
+  font-size: 12px;
+  text-transform: uppercase;
 }
