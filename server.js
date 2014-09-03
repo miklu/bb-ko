@@ -1,8 +1,8 @@
 
 var express = require('express');
 var path = require('path');
-var routes = require('./routes.js');
-var testi = require('./routes/tilastotRouter.js');
+var vedotRoutes = require('./routes/vedotRouter.js');
+var tilastotRoutes = require('./routes/tilastotRouter.js');
 var mongoose = require('mongoose');
 var logger = require('morgan');
 var favicon = require('static-favicon');
@@ -31,8 +31,11 @@ db.once('open', function() {
 });
 
 
-app.use('/', routes);
-app.use('/testi', testi);
+app.get('/', function(req, res) {
+  res.render('index');
+});
+app.use('/vedot', vedotRoutes);
+app.use('/tilastot', tilastotRoutes);
 app.listen(app.get('port'));
 console.log('Kuunnellaan porttia ' + app.get('port'));
 

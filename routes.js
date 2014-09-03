@@ -116,31 +116,4 @@ router.route('/vedot/:id')
     });
   });
 
-// Tilastot
-router.get('/tilastot', function(req, res, next) {
-  Veto.tilastot(function(err, docs) {
-    
-    if(err) {
-      res.send(400, err.name + ': ' + err.message);
-    }
-    else {
-      res.json(docs);
-    }
-
-  });
-});
-
-// Tilastot pelimuodoittain
-router.get('/tilastot/:pelimuoto', function(req, res, next) {
-  Veto.tilastotPelimuodoittain(req.params.pelimuoto, function(err, tilastot) {
-    if(err) {
-      res.send(400, err.name + ':' + err.message);
-    }
-    else {
-      res.json(tilastot);
-    }
-  });
-});
-
-
 module.exports = router;

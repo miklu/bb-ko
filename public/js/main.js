@@ -50,9 +50,9 @@
     // Navigaatio
     self.kategoriat = [
       {nimi: 'Kaikki', url: self.baseUrl + 'vedot', tilasto: '/tilastot'},
-      {nimi: 'Pitkävedot', url: self.baseUrl + 'pelimuoto/pitkäveto', tilasto: '/tilastot/Pitkäveto'},
-      {nimi: 'Tulosvedot', url: self.baseUrl + 'pelimuoto/tulosveto', tilasto: '/tilastot/Tulosveto'},
-      {nimi: 'Monivedot', url: self.baseUrl + 'pelimuoto/moniveto', tilasto: '/tilastot/Moniveto'}];
+      {nimi: 'Pitkävedot', url: self.baseUrl + 'vedot/pelimuoto/pitkäveto', tilasto: '/tilastot/Pitkäveto'},
+      {nimi: 'Tulosvedot', url: self.baseUrl + 'vedot/pelimuoto/tulosveto', tilasto: '/tilastot/Tulosveto'},
+      {nimi: 'Monivedot', url: self.baseUrl + 'vedot/pelimuoto/moniveto', tilasto: '/tilastot/Moniveto'}];
 
     // Data
     self.vedot = ko.observableArray();        // Vedot

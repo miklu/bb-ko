@@ -7,12 +7,28 @@ router.use(function(req, res, next) {
   next();
 });
 
+// /tilastot -> Kaikki tilastot
 router.get('/', function(req, res) {
-  res.send('Kaikki');
+  Veto.tilastot(function(err, docs) {
+    if(err) {
+      res.send(400, err.name + ':' + err.message);
+    }
+    else {
+      res.json(docs);
+    }
+  });
 });
 
-router.get('/:pelimuoto', function(req, res) {
-  res.send(req.params.pelimuoto);
+// Tilastot pelimuodoittain
+router.get('/:pelimuoto', function(req, res, next) {
+  Veto.tilastotPelimuodoittain(req.params.pelimuoto, function(err, tilastot) {
+    if(err) {
+      res.send(400, err.name + ':' + err.message);
+    }
+    else {
+      res.json(tilastot);
+    }
+  });
 });
 
 module.exports = router;
