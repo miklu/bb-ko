@@ -27,6 +27,7 @@ router.route('/')
   .post(function(req, res, next) {
 
     var veto = new Veto({
+      booker: req.body.booker,
       pelimuoto: req.body.pelimuoto,
       panos: req.body.panos,
       voitto: req.body.voitto,
@@ -65,7 +66,7 @@ router.route('/pelimuoto/:pelimuoto')
 
 
 // Vedot id:n mukaan
-router.route('/vedot/:id')
+router.route('/:id')
   .get(function(req, res, next) {
     Veto.findById(req.params.id, function(err, result) {
 
@@ -90,6 +91,7 @@ router.route('/vedot/:id')
         res.send(400, err.name + ': ' + err.message);
       }
       else {
+        result.booker = req.body.booker,
         result.pelimuoto = req.body.pelimuoto,
         result.panos = req.body.panos,
         result.kerroin = req.body.kerroin,

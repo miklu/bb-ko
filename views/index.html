@@ -42,10 +42,35 @@
     <!-- CONTENT WRAPPER -->
     <div id="content-wrapper">
       <div class="header">
-        <div class="col-sm-12">
-            <h3 class="pull-right">Palautusprosentti</h3>
-            <h3 class="pull-right">Saldo</h3>
-          </div>
+        <div class="col-sm-12" id="tilastobar">
+          <table>
+          <thead>
+            <tr>
+              <th>Kappaletta</th>
+              <th>Keskim. panos</th>
+              <th>Panokset yht.</th>
+              <th>Voitot kpl</th>
+              <th>Voitot yht.</th>
+              <th>Osumisprosentti</th>
+              <th>Palautusprosentti</th>
+              <th>Saldo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-bind="foreach: tilastot">
+              <td data-bind="text: kpl"></td>
+              <td data-bind="valuutta: avgPanos"></td>
+              <td data-bind="valuutta: panoksetYht"></td>
+              <td data-bind="valuutta: voitotYht"></td>
+              <td data-bind="text: voitotKpl"></td>
+              <td data-bind="prosentti: osumisprosentti"></td>
+              <td data-bind="prosentti: palautusprosentti"></td>
+              <td data-bind="valuutta: saldo"></td>
+            </tr>
+          </tbody>
+        </table>
+
+        </div>
         </div>
       </div>
       <!-- HEADER LOPPU -->
@@ -54,7 +79,6 @@
           <table class="table table-striped vedot-taulukko">
             <thead>
               <tr>
-                <th>Pvm</th>
                 <th>Booker</th>
                 <th>Pelimuoto</th>
                 <th>Kohteita</th>
@@ -64,37 +88,63 @@
                 <th>Toiminnot</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>22.3.2013</td>
-                <td>Veikkaus</td>
-                <td>Pitkäveto</td>
-                <td>2</td>
-                <td>2.00€</td>
-                <td>10.87</td>
-                <td>0.00€</td>
-                <td>muokkaa | poista</td>
-              </tr>
-              <tr>
-                <td>22.3.2013</td>
-                <td>Veikkaus</td>
-                <td>Pitkäveto</td>
-                <td>2</td>
-                <td>2.00€</td>
-                <td>10.87</td>
-                <td>0.00€</td>
-                <td>muokkaa | poista</td>
+            <tbody data-bind="foreach: vedot">
+              <tr data-bind="click: $root.valitseVeto">
+                <td data-bind="text: booker"></td>
+                <td data-bind="text: pelimuoto"></td>
+                <td data-bind="text: kohteet.length"></td>
+                <td data-bind="text: panos"></td>
+                <td data-bind="text: kerroin"></td>
+                <td data-bind="text: voitto"></td>
+                <td><a href="#" data-bind="click: $root.poistaVeto">Poista</a></td>
+                <td><a href="#" data-bind="click: $root.muokkaa">Muokkaa</a></td>
               </tr>
             </tbody>
           </table>
         </div>
-        <div class="col-sm-3 bg">
-          <h1>Tiedot</h1>
+
+        <!-- VEDON TIEDOT -->
+        <div class="col-sm-3 bg" id="vedonTiedot" data-bind="with: valittuVeto">
+          <ul>
+            <li data-bind="text: _id"></li>
+            <li data-bind="text: pvm"></li>
+            <div data-bind="foreach: kohteet">
+              <strong>Liiga:</strong><p data-bind="text: liiga"></p>
+              <p data-bind="text: ottelu"></p>
+              <p data-bind="text: tyyppi"></p>
+              <p data-bind="text: veikkaus"></p>
+              <p data-bind="text: kerroin"></p>
+              <p data-bind="text: tulos"></p>
+              <p data-bind="text: osuma"></p>
+            </div>
+          </ul>
         </div>
+
+        <!-- Lisäys -->
         <div class="col-sm-3 bg">
-          <h1>Tiedot</h1>
+        <button type="button" class="btn btn-primary" data-bind="click: aloitaTallennus">Lisää veto</button>
+
+        <div id="vetoLomake" data-bind="visible: tallennusLomake.isVisible">
+          <input type="text" data-bind="value: tallennusLomake.pelimuoto" placeholder="pelimuoto">
+          <input type="text" data-bind="value: tallennusLomake.booker" placeholder="booker">
+          <input type="text" data-bind="value: tallennusLomake.panos" placeholder="panos">
+          <input type="text" data-bind="value: tallennusLomake.kerroin" placeholder="kerroin">
+          <input type="text" data-bind="value: tallennusLomake.voitto" placeholder="voitto">
+          <div data-bind="foreach: tallennusLomake.kohteet">
+            <input type="text" data-bind="value: liiga">
+            <input type="text" data-bind="value: ottelu">
+            <input type="text" data-bind="value: tyyppi">
+            <input type="text" data-bind="value: veikkaus">
+            <input type="text" data-bind="value: kerroin">
+            <input type="text" data-bind="value: tulos">
+            <input type="text" data-bind="value: osuma">
+          </div>
+          <button type="button" class="btn btn-primary" data-bind="click: lisaaKohde">Lisää kohde</button>
+          <button type="button" class="btn btn-primary" data-bind="click: tallennaVeto">Tallenna veto</button>
+        </div>
+          <h1>Lisää</h1>
           <input type="text" data-bind="value: sys">
-          <button data-bind="click: tallennaSysteemi">Testa</button>
+          <button data-bind="click: tallennaSysteemi">Testaa</button>
         </div>
       </div>
     </div>

@@ -2,40 +2,41 @@
   'use strict';
 
   // Kombinaatio
-function k_combinations(set, k) {
-  var i, j, combs, head, tailcombs;
-  
-  if (k > set.length || k <= 0) {
-    return [];
-  }
-  
-  if (k == set.length) {
-    return [set];
-  }
-  
-  if (k == 1) {
+  function k_combinations(set, k) {
+    var i, j, combs, head, tailcombs;
+
+    if (k > set.length || k <= 0) {
+      return [];
+    }
+
+    if (k == set.length) {
+      return [set];
+    }
+
+    if (k == 1) {
+      combs = [];
+      for (i = 0; i < set.length; i++) {
+        combs.push([set [i]]);
+      }
+      return combs;
+    }
+
+    // Assert {1 < k < set.length}
+
     combs = [];
-    for (i = 0; i < set.length; i++) {
-      combs.push([set[i]]);
+    for (i = 0; i < set.length - k + 1; i++) {
+      head = set.slice(i, i + 1);
+      tailcombs = k_combinations(set.slice(i + 1), k - 1);
+      for (j = 0; j < tailcombs.length; j++) {
+        combs.push(head.concat(tailcombs[j]));
+      }
     }
     return combs;
   }
-  
-  // Assert {1 < k < set.length}
-  
-  combs = [];
-  for (i = 0; i < set.length - k + 1; i++) {
-    head = set.slice(i, i+1);
-    tailcombs = k_combinations(set.slice(i + 1), k - 1);
-    for (j = 0; j < tailcombs.length; j++) {
-      combs.push(head.concat(tailcombs[j]));
-    }
-  }
-  return combs;
-}
 
-  var Veto = function(pelimuoto, panos, kerroin, voitto, kohteet) {
+  var Veto = function(booker, pelimuoto, panos, kerroin, voitto, kohteet) {
     var self = this;
+    self.booker = booker;
     self.pelimuoto = pelimuoto;
     self.panos = panos;
     self.kerroin = kerroin;
@@ -56,7 +57,7 @@ function k_combinations(set, k) {
     "hideEasing": "linear",
     "showMethod": "fadeIn",
     "hideMethod": "fadeOut"
-};
+  };
 
   // ViewModel
   var ViewModel = function() {
@@ -65,29 +66,56 @@ function k_combinations(set, k) {
     self.baseUrl = 'http://localhost:3000/';
 
     // Navigaatio
-    self.kategoriat = [
-      {nimi: 'Kaikki', url: self.baseUrl + 'vedot', tilasto: '/tilastot'},
-      {nimi: 'Pitkävedot', url: self.baseUrl + 'vedot/pelimuoto/pitkäveto', tilasto: '/tilastot/Pitkäveto'},
-      {nimi: 'Tulosvedot', url: self.baseUrl + 'vedot/pelimuoto/tulosveto', tilasto: '/tilastot/Tulosveto'},
-      {nimi: 'Monivedot', url: self.baseUrl + 'vedot/pelimuoto/moniveto', tilasto: '/tilastot/Moniveto'}];
+    self.kategoriat = [{
+      nimi: 'Kaikki',
+      url: self.baseUrl + 'vedot',
+      tilasto: '/tilastot'
+    }, {
+      nimi: 'Pitkävedot',
+      url: self.baseUrl + 'vedot/pelimuoto/pitkäveto',
+      tilasto: '/tilastot/Pitkäveto'
+    }, {
+      nimi: 'Tulosvedot',
+      url: self.baseUrl + 'vedot/pelimuoto/tulosveto',
+      tilasto: '/tilastot/Tulosveto'
+    }, {
+      nimi: 'Monivedot',
+      url: self.baseUrl + 'vedot/pelimuoto/moniveto',
+      tilasto: '/tilastot/Moniveto'
+    }];
 
     // Data
-    self.vedot = ko.observableArray();        // Vedot
-    self.tilastot = ko.observableArray();     // Tilastot
-    self.valittuKategoria = ko.observable();  // Pitää kirjaa valitusta kategoriasta
-    self.valittuVeto = ko.observable();       // Klikattu/valittu veto
+    self.vedot = ko.observableArray(); // Vedot
+    self.tilastot = ko.observableArray(); // Tilastot
+    self.valittuKategoria = ko.observable(); // Pitää kirjaa valitusta kategoriasta
+    self.valittuVeto = ko.observable(); // Klikattu/valittu veto
     self.muokattavaVeto = ko.observable();
 
     // Tallennuslomake
-    self.tallennusLomake = {pelimuoto: ko.observable(), panos: ko.observable(), voitto: ko.observable(), kerroin: ko.observable(), kohteet: ko.observableArray()};
-    self.tallennusLomake.isVisible = ko.observable(false);  // Onko näkyvä
-    self.tallennusLomake.isNew = ko.observable(false);      // Luodaanko uusi veto vai muokataanko
+    self.tallennusLomake = {
+      pelimuoto: ko.observable(),
+      booker: ko.observable(),
+      panos: ko.observable(),
+      voitto: ko.observable(),
+      kerroin: ko.observable(),
+      kohteet: ko.observableArray()
+    };
+    self.tallennusLomake.isVisible = ko.observable(false); // Onko näkyvä
+    self.tallennusLomake.isNew = ko.observable(false); // Luodaanko uusi veto vai muokataanko
 
     // Systeemit
     self.sys = ko.observable(2);
 
     // Oletuksena lomakkeessa yksi kohde
-    self.tallennusLomake.kohteet.push({ottelu: 'eka ottelu'});
+    self.tallennusLomake.kohteet.push({
+      liiga: 'NFL',
+      ottelu: 'eka ottelu',
+      tyyppi: '1X2',
+      veikkaus: '1',
+      kerroin: '2.3',
+      tulos: '1-2',
+      osuma: false
+    });
 
     // Navigoi/Valitsee kategorian
     self.valitseKategoria = function(category) {
@@ -101,7 +129,7 @@ function k_combinations(set, k) {
     // Näytä vedon tiedot
     self.valitseVeto = function(veto, event) {
       console.log(event.target.tagName);
-      if(event.target.tagName == 'TD') {
+      if (event.target.tagName == 'TD') {
         self.valittuVeto(veto);
         self.tallennusLomake.isVisible(false);
       }
@@ -117,13 +145,13 @@ function k_combinations(set, k) {
     self.tallennaVeto = function() {
 
       // Uusi veto
-      if(self.tallennusLomake.isNew()) {
-        $.post(self.baseUrl + 'vedot', new Veto(self.tallennusLomake.pelimuoto(), self.tallennusLomake.panos(), self.tallennusLomake.kerroin(), self.tallennusLomake.voitto(), self.tallennusLomake.kohteet()))
+      if (self.tallennusLomake.isNew()) {
+        $.post(self.baseUrl + 'vedot', new Veto(self.tallennusLomake.booker(), self.tallennusLomake.pelimuoto(), self.tallennusLomake.panos(), self.tallennusLomake.kerroin(), self.tallennusLomake.voitto(), self.tallennusLomake.kohteet()))
           .done(function(data) {
 
             // Lisätään palvelimen palauttama veto, jotta saadaan myös _id yms.
             self.vedot.push(data);
-            
+
             self.haeTilastot();
             self.valitseKategoria(self.kategoriat[0]);
             toastr.success('Veto tallennettu');
@@ -137,11 +165,11 @@ function k_combinations(set, k) {
       else {
         console.log('Ei ole uusi veto' + self.muokattavaVeto()._id);
         self.tallennusLomake.kohteet().forEach(function(elem) {
-          if(elem.ottelu === "") {
+          if (elem.ottelu === "") {
             self.tallennusLomake.kohteet.remove(elem);
           }
         });
-        var veto = new Veto(self.tallennusLomake.pelimuoto(), self.tallennusLomake.panos(), self.tallennusLomake.kerroin(), self.tallennusLomake.voitto(), self.tallennusLomake.kohteet());
+        var veto = new Veto(self.tallennusLomake.booker() ,self.tallennusLomake.pelimuoto(), self.tallennusLomake.panos(), self.tallennusLomake.kerroin(), self.tallennusLomake.voitto(), self.tallennusLomake.kohteet());
         $.ajax({
           type: 'PUT',
           url: self.baseUrl + 'vedot/' + self.muokattavaVeto()._id,
@@ -157,23 +185,26 @@ function k_combinations(set, k) {
     };
 
     self.tallennaSysteemi = function() {
-      // console.log(self.sys());
+      var koht = [{
+        ottelu: 'Eka',
+        kerroin: 2
+      }, {
+        ottelu: 'Toka',
+        kerroin: 4
+      }, {
+        ottelu: 'Kolmas',
+        kerroin: 6
+      }, {
+        ottelu: 'Neljäs',
+        kerroin: 8
+      }];
 
-
-      var kohteet = [
-        {ottelu: 'Eka', kerroin: 2},
-        {ottelu: 'Toka', kerroin: 4},
-        {ottelu: 'Kolmas', kerroin: 6},
-        {ottelu: 'Neljäs', kerroin: 8}
-      ];
-
-
-      var vedot = k_combinations(kohteet, self.sys());
-      for(var i=0; i < vedot.length; i++) {
+      var betsit = k_combinations(koht, self.sys());
+      for (var i = 0; i < betsit.length; i++) {
         var kerroin = 1;
-        for(var j=0; j < vedot[i].length; j++) {
-          console.log(vedot[i][j].ottelu);
-          kerroin *= vedot[i][j].kerroin;
+        for (var j = 0; j < betsit[i].length; j++) {
+          console.log(betsit[i][j].ottelu);
+          kerroin *= betsit[i][j].kerroin;
         }
         console.log(kerroin);
       }
@@ -182,7 +213,15 @@ function k_combinations(set, k) {
 
     // Lisää uuden kohteen lomakkeeseen
     self.lisaaKohde = function() {
-      self.tallennusLomake.kohteet.push({ottelu: 'uusi kohde'});
+      self.tallennusLomake.kohteet.push({
+        liiga: 'NFL',
+        ottelu: 'eka ottelu',
+        tyyppi: '1X2',
+        veikkaus: '1',
+        kerroin: '2.3',
+        tulos: '1-2',
+        osuma: false
+      });
     };
 
     // Muokkaus
@@ -190,6 +229,7 @@ function k_combinations(set, k) {
       self.tallennusLomake.isNew(false);
       self.valittuVeto(null);
       self.muokattavaVeto(veto);
+      self.tallennusLomake.booker(veto.booker);
       self.tallennusLomake.pelimuoto(veto.pelimuoto);
       self.tallennusLomake.panos(veto.panos);
       self.tallennusLomake.kerroin(veto.kerroin);
@@ -224,16 +264,14 @@ function k_combinations(set, k) {
       self.tallennusLomake.panos('');
       self.tallennusLomake.kerroin('');
       self.tallennusLomake.voitto('');
-      self.tallennusLomake.kohteet('');
-      self.tallennusLomake.kohteet({ottelu: 'ekakohde'});
     };
 
-    self.valitseKategoria(self.kategoriat[0]);  // Oletuksena näytetään kaikki vedot
-    self.haeTilastot();                         // Haetaan tilastot
+    self.valitseKategoria(self.kategoriat[0]); // Oletuksena näytetään kaikki vedot
+    self.haeTilastot(); // Haetaan tilastot
 
   }; // End of ViewModel
 
   ko.applyBindings(new ViewModel());
 
-  
+
 })();

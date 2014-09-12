@@ -1,11 +1,18 @@
 var mongoose = require('mongoose');
 
 var Kohde = mongoose.Schema({
-	ottelu: String
+	liiga: String,
+	ottelu: String,
+	tyyppi: String,
+	veikkaus: String,
+	kerroin: Number,
+	tulos: String,
+	osuma: Boolean
 });
 
 var VetoSchema = mongoose.Schema({
 	pvm: {type: Date, default: Date.now},
+	booker: String,
 	pelimuoto: String,
 	panos: {type: Number, required: true},
 	kerroin: Number,

@@ -23,7 +23,7 @@ app.use(bodyParser());
 app.use(methodOverride());
 
 
-mongoose.connect('mongodb://localhost/dev');
+mongoose.connect('mongodb://localhost/vedonlyonti');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'Virhe yhdistäessä tietokantaan'));
 db.once('open', function() {

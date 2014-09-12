@@ -204,7 +204,7 @@ function k_combinations(set, k) {
     self.tallennusLomake.isNew = ko.observable(false);      // Luodaanko uusi veto vai muokataanko
 
     // Systeemit
-    self.sys = ko.observable(3);
+    self.sys = ko.observable(2);
 
     // Oletuksena lomakkeessa yksi kohde
     self.tallennusLomake.kohteet.push({ottelu: 'eka ottelu'});
@@ -276,15 +276,27 @@ function k_combinations(set, k) {
       }
     };
 
-    self.tallennaSysteemi = function(n) {
+    self.tallennaSysteemi = function() {
+      // console.log(self.sys());
+
+
       var kohteet = [
-        {ottelu: 'Eka', osuma: true},
-        {ottelu: 'Toka', osuma: true},
-        {ottelu: 'Kolmas', osuma: true},
-        {ottelu: 'Neljäs', osuma: true},
+        {ottelu: 'Eka', kerroin: 2},
+        {ottelu: 'Toka', kerroin: 4},
+        {ottelu: 'Kolmas', kerroin: 6},
+        {ottelu: 'Neljäs', kerroin: 8}
       ];
 
-      console.log(k_combinations(kohteet, n));
+
+      var vedot = k_combinations(kohteet, self.sys());
+      for(var i=0; i < vedot.length; i++) {
+        var kerroin = 1;
+        for(var j=0; j < vedot[i].length; j++) {
+          console.log(vedot[i][j].ottelu);
+          kerroin *= vedot[i][j].kerroin;
+        }
+        console.log(kerroin);
+      }
 
     };
 
