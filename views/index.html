@@ -21,8 +21,8 @@
         </li>
         <li class="sidebar-title"><span>Pelimuodottain</span></li>
         <li class="sidebar-list"><a href="#">Kaikki</a></li>
-        <li class="sidebar-list"><a href="#">Pitkävedot</a></li>
-        <li class="sidebar-list"><a href="#">Tulosvedot</a></li>
+        <li class="sidebar-list"><a href="vedot/pelimuoto/pitkäveto">Pitkävedot</a></li>
+        <li class="sidebar-list"><a href="vedot/pelimuoto/Tulosveto">Tulosvedot</a></li>
         <li class="sidebar-title"><span>Kohteittain</span></li>
         <li class="sidebar-list"><a href="#">Singlet</a></li>
         <li class="sidebar-list"><a href="#">Tuplat</a></li>
@@ -93,6 +93,8 @@
         </div>
         <div class="col-sm-3 bg">
           <h1>Tiedot</h1>
+          <input type="text" data-bind="value: sys">
+          <button data-bind="click: tallennaSysteemi">Testa</button>
         </div>
       </div>
     </div>
@@ -101,6 +103,11 @@
   <!-- PAGE WRAPPER LOPPU -->
 
   <!-- JAVASCRIPT -->
-  <script src="js/all.js"></script>
+  <!-- <script src="js/all.js"></script> -->
+  <script src="js/jquery-2.1.1.min.js"></script>
+  <script src="js/knockout-3.1.0.js"></script>
+  <script src="js/toastr.min.js"></script>
+  <script src="js/customBindings.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>

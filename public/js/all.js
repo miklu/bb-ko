@@ -121,6 +121,39 @@ ko.bindingHandlers.prosentti = {
 (function() {
   'use strict';
 
+  // Kombinaatio
+function k_combinations(set, k) {
+  var i, j, combs, head, tailcombs;
+  
+  if (k > set.length || k <= 0) {
+    return [];
+  }
+  
+  if (k == set.length) {
+    return [set];
+  }
+  
+  if (k == 1) {
+    combs = [];
+    for (i = 0; i < set.length; i++) {
+      combs.push([set[i]]);
+    }
+    return combs;
+  }
+  
+  // Assert {1 < k < set.length}
+  
+  combs = [];
+  for (i = 0; i < set.length - k + 1; i++) {
+    head = set.slice(i, i+1);
+    tailcombs = k_combinations(set.slice(i + 1), k - 1);
+    for (j = 0; j < tailcombs.length; j++) {
+      combs.push(head.concat(tailcombs[j]));
+    }
+  }
+  return combs;
+}
+
   var Veto = function(pelimuoto, panos, kerroin, voitto, kohteet) {
     var self = this;
     self.pelimuoto = pelimuoto;
@@ -169,6 +202,9 @@ ko.bindingHandlers.prosentti = {
     self.tallennusLomake = {pelimuoto: ko.observable(), panos: ko.observable(), voitto: ko.observable(), kerroin: ko.observable(), kohteet: ko.observableArray()};
     self.tallennusLomake.isVisible = ko.observable(false);  // Onko näkyvä
     self.tallennusLomake.isNew = ko.observable(false);      // Luodaanko uusi veto vai muokataanko
+
+    // Systeemit
+    self.sys = ko.observable(3);
 
     // Oletuksena lomakkeessa yksi kohde
     self.tallennusLomake.kohteet.push({ottelu: 'eka ottelu'});
@@ -238,6 +274,18 @@ ko.bindingHandlers.prosentti = {
           }
         });
       }
+    };
+
+    self.tallennaSysteemi = function(n) {
+      var kohteet = [
+        {ottelu: 'Eka', osuma: true},
+        {ottelu: 'Toka', osuma: true},
+        {ottelu: 'Kolmas', osuma: true},
+        {ottelu: 'Neljäs', osuma: true},
+      ];
+
+      console.log(k_combinations(kohteet, n));
+
     };
 
     // Lisää uuden kohteen lomakkeeseen
